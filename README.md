@@ -5,7 +5,7 @@ Vítej, na základě této šablony repozitáře budeš pracovat. Repozitář je
 | Cesta                    | Popis                                                                                                                                        |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | **/manuals**             | Obsahuje šikovné manuály a taháky co jsme splašili z minulých kurzů                                                                          |
-| **/project**             | Hlavní složka tvého repozitáře pro finální projekt, má vlastní [Readme](project/Readme.md)                                                   |
+| **/ToDoList**             | Hlavní složka tvého repozitáře pro finální projekt, má vlastní [Readme](ToDoList/Readme.md)                                                   |
 | **/sandbox**             | Dedikované místo pro procvičování, má vlastní [Readme](sandbox/Readme.md)                                                                    |
 | **/wiki**                | Místo, které jsme připravili jako dedikovanou `Wikipedii` pro tento kurz. Prosím začni tady [StartHere](wiki/00%20StartHere.md)              |
 | **.editorconfig**        | Soubor zodpovědný za formátování kódu                                                                                                        |

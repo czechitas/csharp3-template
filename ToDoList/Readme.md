@@ -1,4 +1,4 @@
-# Project
+# ToDoList
 
 Tato složka slouží jako úložiště pro tvůj závěrečný projekt, nejčastěji se budeme pohybovat právě zde.
 
