@@ -1,20 +1,10 @@
 # Setting Up Final Project
 
-## 🗂️ Setting up folder structure and helper files
-
-```cmd
-cd ToDoList
-dotnet new sln --name ToDoList
-mkdir src
-mkdir tests
-mkdir data
-```
-
 ## 📡 Creating ToDoList.WebApi project
 
 ```cmd
 cd ToDoList
-dotnet new webapi --name ToDoList.WebApi --output src/ToDoList.WebApi
+dotnet new web --name ToDoList.WebApi --output src/ToDoList.WebApi
 ```
 
 ## 📘 Creating ToDoList.Model project
