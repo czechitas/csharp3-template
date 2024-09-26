@@ -10,10 +10,10 @@ Odkazovat se můžeš i na jiné stránky takto [Markdown Lookup](markdown-looku
 
 ### Pouzivej obrazky a vystrizky
 
-Obrazky muzes vkladat i z internetu pomoci `control + v` (jednoduche uvozovky pro zvyrazneni)
+Obrazky muzes vkladat i z internetu pomoci `control + v` (jednoduche uvozovky používáme pro zvyrazneni kousku textu)
 Vložené obrazky se ti pak ulozi do aktualni slozky (zde do /docs) :)
-![alt text](image.png)
-Jedná se pak o lokální odkaz na relativní cestu obrázku (/image.png)
+![alt text](image.png) (vykricnik znaci odkaz na obrazek, v hranatych je alternativni odkaz/popisek obrazku, v kulatych lokalni odkaz na cestu k obrázku)
+Jedná se pak o lokální odkaz z tohoto souboru na relativní cestu obrázku (/image.png)
 Pokud si chceš obrázky ukládat do extra složky (např. /images), relativní cesta by byla images/nazevobrazku.koncovkaobrazku
 
 Pripadne muzes takhle naprimo pouzit adresu obrazku z internetu: ![MarkdownHereIcon](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png)
