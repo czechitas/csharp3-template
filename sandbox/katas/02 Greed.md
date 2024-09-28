@@ -35,6 +35,12 @@ Modify your scoring method to support the following rules:
 - Three Pairs [2,2,3,3,4,4] (800 points)
 - Straight [1,2,3,4,5,6] (1200 points)
 
+## Example Scores with Extra Credit
+
+- [1,1,1,5,1] = 2050 points
+- [2,3,4,6,2] = 0 points
+- [3,4,5,3,3] = 350 points
+
 ## Resources
 
 - [Walkthrough by Steve Smith (@ardalis)](http://pluralsight.com/training/courses/TableOfContents?courseName=patterns-library&highlight=steve-smith_patterns-rules*11#patterns-rules)
