@@ -7,11 +7,11 @@ cd ToDoList
 dotnet new web --name ToDoList.WebApi --output src/ToDoList.WebApi
 ```
 
-## 📘 Creating ToDoList.Model project
+## 📘 Creating ToDoList.Domain project
 
 ```cmd
 cd ToDoList
-dotnet new classlib --name ToDoList.Model --output src/ToDoList.Model
+dotnet new classlib --name ToDoList.Domain --output src/ToDoList.Domain
 ```
 
 ## 🗃️ Creating ToDoList.Persistency project
