@@ -7,9 +7,10 @@ git remote add template https://github.com/czechitas/csharp3-template
 git pull template main --allow-unrelated-histories
 ```
 
-[git remote příkaz přidává nový remote](#přidání-nového-remote-stačí-provést-jednou) (odkaz na kapitolu)
-[git pull nakoupí změny ze šablony](#zapracování-změn-z-šablony-při-každé-aktualizaci) (odkaz na kapitolu)
-\+ [vyřešit možné konflikty](#řešení-merge-conflictů) (odkaz na kapitolu)
+- [Jak aktualizovat repozitář z šablony](#jak-aktualizovat-repozitář-z-šablony)
+  - [Přidání nového remote (stačí provést jednou)](#přidání-nového-remote-stačí-provést-jednou)
+  - [Zapracování změn z šablony (při každé aktualizaci)](#zapracování-změn-z-šablony-při-každé-aktualizaci)
+    - [Řešení Merge Conflictů](#řešení-merge-conflictů)
 
 ## Přidání nového remote (stačí provést jednou)
 
