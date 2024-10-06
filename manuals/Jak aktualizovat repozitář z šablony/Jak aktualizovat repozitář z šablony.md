@@ -9,7 +9,7 @@ git pull template main --allow-unrelated-histories
 
 - [Jak aktualizovat repozitář z šablony](#jak-aktualizovat-repozitář-z-šablony)
   - [Přidání nového remote (stačí provést jednou)](#přidání-nového-remote-stačí-provést-jednou)
-  - [Zapracování změn z šablony (při každé aktualizaci)](#zapracování-změn-z-šablony-při-každé-aktualizaci)
+  - [Zapracování nejnovějších změn z šablony (při každé aktualizaci - z větve main)](#zapracování-nejnovějších-změn-z-šablony-při-každé-aktualizaci---z-větve-main)
     - [Řešení Merge Conflictů](#řešení-merge-conflictů)
 
 ## Přidání nového remote (stačí provést jednou)
@@ -27,7 +27,7 @@ Ve VSCode pak uvidíme v `Source Control -> Remotes` nový remote s názvem `tem
 
 ![alt text](image.png)
 
-## Zapracování změn z šablony (při každé aktualizaci)
+## Zapracování nejnovějších změn z šablony (při každé aktualizaci - z větve main)
 
 Příkazem `git pull template main --allow-unrelated-histories`\
 ve tvaru `git pull <odkud> <kam> <--allow-unrelated-histories = ignoruj, že repozitáře nemají stejnou historii>`\
