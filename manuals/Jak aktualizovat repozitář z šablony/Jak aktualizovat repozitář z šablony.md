@@ -33,10 +33,13 @@ Příkazem `git pull template main --allow-unrelated-histories`\
 ve tvaru `git pull <odkud> <kam> <--allow-unrelated-histories = ignoruj, že repozitáře nemají stejnou historii>`\
 si načteme aktuální stav šablony v remotu `template` a pokusíme se ho zamergovat do naší hlavní větve `main`.
 
-Ve VSCode pak v `Source Control -> Source Control` uvidíš `Changes`, které se k tobě dostaly zapracováním šablony do tvého repozitáře. **V tuto chvíli máš vyhráno! Přidej message commitu, stagni všechny změny, commitni a pushni a máš hotovo!**
+Ve VSCode pak v `Source Control -> Source Control` uvidíš `Changes`, které se k tobě dostaly zapracováním šablony do tvého repozitáře.\
+**V tuto chvíli máš vyhráno! Přidej message commitu, stagni všechny změny, commitni a pushni a máš hotovo!**
 
 **Pokud se ti však ukázalo v konzoli něco podobného jako**
+
 ![alt text](image-3.png)
+
 **musíme udělat ještě krok navíc.**
 
 Pokud se něco změnilo v některém souborů šablony a zároveň jsi do stejného souboru zasahovala sama, s největší pravděpodobností nastane `Merge Conflict`!
@@ -67,6 +70,8 @@ To uděláme tak, že klikneme na tlačítko `Accept All Changes from Left`, po 
 S takto vyřešenými problémy klikneme v pravém dolním rohu na `Complete Merge` ![alt text](image-8.png)
 
 Tento postup zopakuj pro všechny soubory, ve kterých je Merge Conflict, v source control pak nebude ani jeden soubor s vykřičníky
+
 ![alt text](image-9.png)
+
 Nezapomeň na vyplnění zprávy, poté commitni a pushni.
 Hotovo!
