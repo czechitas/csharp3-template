@@ -98,44 +98,18 @@ Doplň kód do metod v třídě `ToDoItemsController`. Specifikace je níže.
 ### ToDoItem.Model ToDoItemCreateRequestDto
 
 ```csharp
-public class ToDoItemCreateRequestDto
+public record class ToDoItemCreateRequestDto(string Name, string Description, bool IsCompleted) //id is generated
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public bool IsCompleted { get; set; }
-
-    public ToDoItem ToDomain()
-    {
-        return new ToDoItem
-        {
-            Name = this.Name,
-            Description = this.Description,
-            IsCompleted = this.IsCompleted,
-        };
-    }
+    public ToDoItem ToDomain() => new() { Name = Name, Description = Description, IsCompleted = IsCompleted };
 }
 ```
 
 ### ToDoItem.Model ToDoItemGetResponseDto
 
 ```csharp
-public class ToDoItemGetResponseDto
+public record class ToDoItemGetResponseDto(int Id, string Name, string Description, bool IsCompleted) //let client know the Id
 {
-    public int ToDoItemId { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public bool IsCompleted { get; set; }
-
-    public static ToDoItemGetResponseDto FromDomain(ToDoItem item)
-    {
-        return new ToDoItemGetResponseDto
-        {
-            ToDoItemId = item.ToDoItemId,
-            Name = item.Name,
-            Description = item.Description,
-            IsCompleted = item.IsCompleted,
-        };
-    }
+    public static ToDoItemGetResponseDto FromDomain(ToDoItem item) => new(item.ToDoItemId, item.Name, item.Description, item.IsCompleted);
 }
 ```
 
@@ -183,7 +157,7 @@ public class ToDoItemsController : ControllerBase
         }
 
         //respond to client
-        return Created(); //201
+        return Created(); //201 //tato metoda z nějakého důvodu vrací status code No Content 204, zjištujeme proč ;)
     }
 
     [HttpGet]
