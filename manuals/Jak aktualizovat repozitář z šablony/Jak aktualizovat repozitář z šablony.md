@@ -38,6 +38,24 @@ Ve VSCode pak v `Source Control -> Source Control` uvidíš `Changes`, které se
 
 **Pokud se ti však ukázalo v konzoli něco podobného jako**
 
+```hint: You have divergent branches and need to specify how to reconcile them.
+hint: You can do so by running one of the following commands sometime before
+hint: your next pull:
+hint: 
+hint:   git config pull.rebase false  # merge
+hint:   git config pull.rebase true   # rebase
+hint:   git config pull.ff only       # fast-forward only
+hint: 
+hint: You can replace "git config" with "git config --global" to set a default
+hint: preference for all repositories. You can also pass --rebase, --no-rebase,
+hint: or --ff-only on the command line to override the configured default per
+hint: invocation.
+fatal: Need to specify how to reconcile divergent branches.
+```
+V tom případě musíme zajistit, jak chceme s gitem zacházet, když budeme mít změny ze dvou různých zdrojů: našeho a šablony. Stačí zavolat příkaz `git config pull.rebase false` a tím si zajistit, že každá takováhle změna se bude projevovat ako nový merge request do naší větve.
+
+**Pokud se ti však ukázalo v konzoli něco podobného jako**
+
 ![alt text](image-3.png)
 
 **musíme udělat ještě krok navíc.**
