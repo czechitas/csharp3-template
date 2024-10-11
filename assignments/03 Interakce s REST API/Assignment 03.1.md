@@ -98,7 +98,7 @@ Doplň kód do metod v třídě `ToDoItemsController`. Specifikace je níže.
 ### ToDoItem.Model ToDoItemCreateRequestDto
 
 ```csharp
-public record class ToDoItemCreateRequestDto(string Name, string Description, bool IsCompleted) //id is generated
+public record ToDoItemCreateRequestDto(string Name, string Description, bool IsCompleted) //id is generated
 {
     public ToDoItem ToDomain() => new() { Name = Name, Description = Description, IsCompleted = IsCompleted };
 }
@@ -107,7 +107,7 @@ public record class ToDoItemCreateRequestDto(string Name, string Description, bo
 ### ToDoItem.Model ToDoItemGetResponseDto
 
 ```csharp
-public record class ToDoItemGetResponseDto(int Id, string Name, string Description, bool IsCompleted) //let client know the Id
+public record ToDoItemGetResponseDto(int Id, string Name, string Description, bool IsCompleted) //let client know the Id
 {
     public static ToDoItemGetResponseDto FromDomain(ToDoItem item) => new(item.ToDoItemId, item.Name, item.Description, item.IsCompleted);
 }
