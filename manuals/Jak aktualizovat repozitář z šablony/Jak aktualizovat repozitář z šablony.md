@@ -10,6 +10,8 @@ git pull template main --allow-unrelated-histories
 - [Jak aktualizovat repozitář z šablony](#jak-aktualizovat-repozitář-z-šablony)
   - [Přidání nového remote (stačí provést jednou)](#přidání-nového-remote-stačí-provést-jednou)
   - [Zapracování nejnovějších změn z šablony (při každé aktualizaci - z větve main)](#zapracování-nejnovějších-změn-z-šablony-při-každé-aktualizaci---z-větve-main)
+    - [Pokud se ti ukázalo v konzoli něco podobného jako](#pokud-se-ti-ukázalo-v-konzoli-něco-podobného-jako)
+    - [Pokud se ti však ukázalo v konzoli něco podobného jako](#pokud-se-ti-však-ukázalo-v-konzoli-něco-podobného-jako)
     - [Řešení Merge Conflictů](#řešení-merge-conflictů)
 
 ## Přidání nového remote (stačí provést jednou)
@@ -35,10 +37,12 @@ si načteme aktuální stav šablony v remotu `template` a pokusíme se ho zamer
 
 Ve VSCode pak v `Source Control -> Source Control` uvidíš `Changes`, které se k tobě dostaly zapracováním šablony do tvého repozitáře.\
 **V tuto chvíli máš vyhráno! Přidej message commitu, stagni všechny změny, commitni a pushni a máš hotovo!**
+Pokud se něco pokazilo, mrkni níže.
 
-**Pokud se ti však ukázalo v konzoli něco podobného jako**
+### Pokud se ti ukázalo v konzoli něco podobného jako
 
-```hint: You have divergent branches and need to specify how to reconcile them.
+```text
+hint: You have divergent branches and need to specify how to reconcile them.
 hint: You can do so by running one of the following commands sometime before
 hint: your next pull:
 hint: 
@@ -52,9 +56,10 @@ hint: or --ff-only on the command line to override the configured default per
 hint: invocation.
 fatal: Need to specify how to reconcile divergent branches.
 ```
-V tom případě musíme zajistit, jak chceme s gitem zacházet, když budeme mít změny ze dvou různých zdrojů: našeho a šablony. Stačí zavolat příkaz `git config pull.rebase false` a tím si zajistit, že každá takováhle změna se bude projevovat ako nový merge request do naší větve.
 
-**Pokud se ti však ukázalo v konzoli něco podobného jako**
+V tom případě musíme zajistit, jak chceme s gitem zacházet, když budeme mít změny ze dvou různých zdrojů: našeho a šablony. Stačí zavolat příkaz `git config pull.rebase false` a tím si zajistit, že každá takováhle změna se bude projevovat jako nový merge request do naší větve.
+
+### Pokud se ti však ukázalo v konzoli něco podobného jako
 
 ![alt text](image-3.png)
 
