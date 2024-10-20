@@ -31,12 +31,12 @@ dotnet new xunit --name ToDoList.Test --output tests/ToDoList.Test
 dotnet sln add tests/ToDoList.Test
 ```
 
-## 🗃️ Creating ToDoList.Persistency project
+## 🗃️ Creating ToDoList.Persistence project
 
 ```cmd
 cd ToDoList
-dotnet new classlib --name ToDoList.Persistency --output src/ToDoList.Persistency
-dotnet sln add src/ToDoList.Persistency
+dotnet new classlib --name ToDoList.Persistence --output src/ToDoList.Persistence
+dotnet sln add src/ToDoList.Persistence
 ```
 
 ## 🌐 Creating ToDoList.Frontend project
