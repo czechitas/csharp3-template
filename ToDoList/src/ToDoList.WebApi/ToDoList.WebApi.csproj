@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ToDoList.Domain\ToDoList.Domain.csproj" />
+    <ProjectReference Include="..\ToDoList.Persistence\ToDoList.Persistence.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
