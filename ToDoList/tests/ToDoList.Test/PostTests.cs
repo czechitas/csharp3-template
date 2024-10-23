@@ -2,6 +2,7 @@ namespace ToDoList.Test;
 
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
+using ToDoList.Persistence;
 using ToDoList.WebApi.Controllers;
 
 public class PostTests
@@ -10,7 +11,8 @@ public class PostTests
     public void Post_ValidRequest_ReturnsNewItem()
     {
         // Arrange
-        var controller = new ToDoItemsController();
+        var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
+        var controller = new ToDoItemsController(context);
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
