@@ -18,7 +18,7 @@ public class GetTests
             Description = "Popis",
             IsCompleted = false
         };
-        ToDoItemsController.items.Add(toDoItem);
+        controller.items.Add(toDoItem);
 
         // Act
         var result = controller.Read();
@@ -34,5 +34,19 @@ public class GetTests
         Assert.Equal(toDoItem.Description, firstItem.Description);
         Assert.Equal(toDoItem.IsCompleted, firstItem.IsCompleted);
         Assert.Equal(toDoItem.Name, firstItem.Name);
+    }
+
+    [Fact]
+    public void Get_NoItems_ReturnsNotFound()
+    {
+        // Arrange
+        var controller = new ToDoItemsController();
+
+        // Act
+        var result = controller.Read();
+        var resultResult = result.Result;
+
+        // Assert
+        Assert.IsType<NotFoundResult>(resultResult);
     }
 }
