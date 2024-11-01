@@ -1,4 +1,4 @@
-namespace ToDoList.Test;
+namespace ToDoList.Test.IntegrationTests;
 
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
@@ -12,17 +12,16 @@ public class PutTests
     public void Put_ValidId_ReturnsNoContent()
     {
         // Arrange
-        var path = AppContext.BaseDirectory;
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
-        var controller = new ToDoItemsController(context);
+        var controller = new ToDoItemsController(context, null); // Docasny hack, nez z controlleru odstranime context.
         var toDoItem = new ToDoItem
         {
-            ToDoItemId = 1,
             Name = "Jmeno",
             Description = "Popis",
             IsCompleted = false
         };
-        controller.items.Add(toDoItem);
+        context.ToDoItems.Add(toDoItem);
+        context.SaveChanges();
 
         var request = new ToDoItemUpdateRequestDto(
             Name: "Jine jmeno",
@@ -42,15 +41,15 @@ public class PutTests
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
-        var controller = new ToDoItemsController(context);
+        var controller = new ToDoItemsController(context, null); // Docasny hack, nez z controlleru odstranime context.
         var toDoItem = new ToDoItem
         {
-            ToDoItemId = 1,
             Name = "Jmeno",
             Description = "Popis",
             IsCompleted = false
         };
-        controller.items.Add(toDoItem);
+        context.ToDoItems.Add(toDoItem);
+        context.SaveChanges();
 
         var request = new ToDoItemUpdateRequestDto(
             Name: "Jine jmeno",
