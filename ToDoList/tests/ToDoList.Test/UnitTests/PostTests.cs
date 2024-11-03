@@ -15,7 +15,7 @@ public class PostUnitTests
     {
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
-        var controller = new ToDoItemsController(null, repositoryMock); // Docasny hack, nez z controlleru odstranime context.
+        var controller = new ToDoItemsController(repositoryMock);
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
@@ -41,7 +41,7 @@ public class PostUnitTests
     {
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
-        var controller = new ToDoItemsController(null, repositoryMock); // Docasny hack, nez z controlleru odstranime context.
+        var controller = new ToDoItemsController(repositoryMock);
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",

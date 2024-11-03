@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.Persistence;
+using ToDoList.Persistence.Repositories;
 using ToDoList.WebApi.Controllers;
 
 public class PutTests
@@ -13,7 +14,8 @@ public class PutTests
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
-        var controller = new ToDoItemsController(context, null); // Docasny hack, nez z controlleru odstranime context.
+        var repository = new ToDoItemsRepository(context);
+        var controller = new ToDoItemsController(repository);
         var toDoItem = new ToDoItem
         {
             Name = "Jmeno",
@@ -41,7 +43,8 @@ public class PutTests
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
-        var controller = new ToDoItemsController(context, null); // Docasny hack, nez z controlleru odstranime context.
+        var repository = new ToDoItemsRepository(context);
+        var controller = new ToDoItemsController(repository);
         var toDoItem = new ToDoItem
         {
             Name = "Jmeno",

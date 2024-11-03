@@ -14,7 +14,7 @@ public class PostTests
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
         var repository = new ToDoItemsRepository(context);
-        var controller = new ToDoItemsController(null, repository); // Docasny hack, nez z controlleru odstranime context.
+        var controller = new ToDoItemsController(repository);
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
