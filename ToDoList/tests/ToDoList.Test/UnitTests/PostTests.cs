@@ -1,4 +1,4 @@
-namespace ToDoList.Test;
+namespace ToDoList.Test.UnitTests;
 
 using NSubstitute;
 using Microsoft.AspNetCore.Mvc;
