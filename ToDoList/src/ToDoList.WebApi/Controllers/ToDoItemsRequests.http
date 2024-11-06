@@ -26,7 +26,7 @@ Content-Type: application/json
 
 ###
 
-//Update ToDoItem
+//Update existing ToDoItem by id
 @itemToUpdateId = 1
 
 PUT {{host}}:{{port}}/api/ToDoItems/{{itemToUpdateId}}
@@ -40,6 +40,6 @@ Content-Type: application/json
 
 ###
 
-//Delete ToDoItem
+//Delete exisiting ToDoItem by id
 @itemToDeleteId = 1
-DELETE {{host}}:{{port}}/api/ToDoItems/{{itemToUpdateId}}
+DELETE {{host}}:{{port}}/api/ToDoItems/{{itemToDeleteId}}
