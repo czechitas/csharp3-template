@@ -15,7 +15,7 @@ public class PostUnitTests
     {
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
-        var controller = new ToDoItemsController(null, repositoryMock); // Docasny hack, nez z controlleru odstranime context.
+        var controller = new ToDoItemsController(repositoryMock);
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
@@ -29,6 +29,7 @@ public class PostUnitTests
 
         // Assert
         Assert.IsType<CreatedAtActionResult>(resultResult);
+        repositoryMock.Received(1).Create(Arg.Any<ToDoItem>());
         Assert.NotNull(value);
 
         Assert.Equal(request.Description, value.Description);
@@ -41,7 +42,7 @@ public class PostUnitTests
     {
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
-        var controller = new ToDoItemsController(null, repositoryMock); // Docasny hack, nez z controlleru odstranime context.
+        var controller = new ToDoItemsController(repositoryMock);
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
