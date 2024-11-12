@@ -30,6 +30,8 @@ public class PostUnitTests
         // Assert
         Assert.IsType<CreatedAtActionResult>(resultResult);
         repositoryMock.Received(1).Create(Arg.Any<ToDoItem>());
+
+        // These asserts are optional
         Assert.NotNull(value);
 
         Assert.Equal(request.Description, value.Description);

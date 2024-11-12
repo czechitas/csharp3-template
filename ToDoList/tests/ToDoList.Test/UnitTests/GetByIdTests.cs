@@ -9,58 +9,60 @@ using Microsoft.AspNetCore.Http;
 using NSubstitute.ExceptionExtensions;
 using NSubstitute.ReturnsExtensions;
 
-public class GetUnitTests
+public class GetByIdUnitTests
 {
     [Fact]
-    public void Get_ReadWhenSomeItemAvailable_ReturnsOk()
+    public void Get_ReadByIdWhenSomeItemAvailable_ReturnsOk()
     {
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
-        repositoryMock.ReadAll().Returns([new ToDoItem { Name = "testItem", Description = "testDescription", IsCompleted = false }]);
+        var someId = 1;
+        repositoryMock.ReadById(someId).Returns(new ToDoItem { Name = "testItem", Description = "testDescription", IsCompleted = false });
 
         // Act
-        var result = controller.Read();
+        var result = controller.ReadById(someId);
         var resultResult = result.Result;
 
         // Assert
         Assert.IsType<OkObjectResult>(resultResult);
-        repositoryMock.Received(1).ReadAll();
+        repositoryMock.Received(1).ReadById(someId);
     }
 
     [Fact]
-    public void Get_ReadWhenNoItemAvailable_ReturnsNotFound()
+    public void Get_ReadByIdWhenItemIsNull_ReturnsNotFound()
     {
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
-        repositoryMock.ReadAll().ReturnsNull();
+        var someId = 1;
+        repositoryMock.ReadById(someId).ReturnsNull();
 
         // Act
-        var result = controller.Read();
+        var result = controller.ReadById(someId);
         var resultResult = result.Result;
 
         // Assert
         Assert.IsType<NotFoundResult>(resultResult);
-        repositoryMock.Received(1).ReadAll();
+        repositoryMock.Received(1).ReadById(someId);
     }
 
     [Fact]
-    public void Get_ReadUnhandledException_ReturnsInternalServerError()
+    public void Get_ReadByIdUnhandledException_ReturnsInternalServerError()
     {
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
-        //repositoryMock.When(r => r.ReadAll()).Do(r => throw new Exception());
-        repositoryMock.ReadAll().Throws(new Exception());
+        var someId = 1;
+        repositoryMock.ReadById(someId).Throws(new Exception());
 
         // Act
-        var result = controller.Read();
+        var result = controller.ReadById(someId);
         var resultResult = result.Result;
 
         // Assert
         Assert.IsType<ObjectResult>(resultResult);
-        repositoryMock.Received(1).ReadAll();
+        repositoryMock.Received(1).ReadById(someId);
         Assert.Equivalent(new StatusCodeResult(StatusCodes.Status500InternalServerError), resultResult);
     }
 
