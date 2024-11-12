@@ -117,7 +117,7 @@ public class ToDoItemsController : ControllerBase
                 return NotFound(); //404
             }
 
-            repository.DeleteById(toDoItemId);
+            repository.Delete(itemToDelete);
         }
         catch (Exception ex)
         {
