@@ -7,6 +7,7 @@ using ToDoList.Persistence.Repositories;
 using ToDoList.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using NSubstitute.ExceptionExtensions;
+using NSubstitute.ReturnsExtensions;
 
 public class GetUnitTests
 {
@@ -33,8 +34,7 @@ public class GetUnitTests
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
-        repositoryMock.ReadAll().Returns(null as IEnumerable<ToDoItem>); // null enumerable
-        //repositoryMock.ReadAll().Returns([]]); empty enumerable
+        repositoryMock.ReadAll().ReturnsNull();
 
         // Act
         var result = controller.Read();
