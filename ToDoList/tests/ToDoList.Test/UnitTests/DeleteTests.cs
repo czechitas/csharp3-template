@@ -43,7 +43,7 @@ public class DeleteUnitTests
         // Assert
         Assert.IsType<NotFoundResult>(result);
         repositoryMock.Received(1).ReadById(someId);
-        repositoryMock.Received(0).DeleteById(Arg.Any<int>()); // nothing was deleted
+        repositoryMock.Received(0).DeleteById(Arg.Any<int>()); // make sure nothing was deleted
     }
 
     [Fact]

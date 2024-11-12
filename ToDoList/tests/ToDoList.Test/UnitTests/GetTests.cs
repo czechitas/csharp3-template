@@ -11,7 +11,7 @@ using NSubstitute.ExceptionExtensions;
 public class GetUnitTests
 {
     [Fact]
-    public void Get_ReadAllSomeItemAvailable_ReturnsOk()
+    public void Get_ReadWhenSomeItemAvailable_ReturnsOk()
     {
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
@@ -28,7 +28,7 @@ public class GetUnitTests
     }
 
     [Fact]
-    public void Get_ReadAllNoItemAvailable_ReturnsNotFound()
+    public void Get_ReadWhenNoItemAvailable_ReturnsNotFound()
     {
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
