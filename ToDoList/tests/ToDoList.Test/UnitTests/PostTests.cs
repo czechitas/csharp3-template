@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 public class PostUnitTests
 {
     [Fact]
-    public void Post_ValidRequest_ReturnsNewItem()
+    public void Post_CreateValidRequest_ReturnsCreatedAtAction()
     {
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
@@ -30,6 +30,8 @@ public class PostUnitTests
         // Assert
         Assert.IsType<CreatedAtActionResult>(resultResult);
         repositoryMock.Received(1).Create(Arg.Any<ToDoItem>());
+
+        // These asserts are optional
         Assert.NotNull(value);
 
         Assert.Equal(request.Description, value.Description);
@@ -38,7 +40,7 @@ public class PostUnitTests
     }
 
     [Fact]
-    public void Post_UnhandledException_Returns500()
+    public void Post_CreateUnhandledException_ReturnsInternalServerError()
     {
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
