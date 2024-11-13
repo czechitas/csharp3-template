@@ -1,4 +1,4 @@
-namespace ToDoList.Test;
+namespace ToDoList.Test.UnitTests;
 
 using NSubstitute;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Http;
 public class PostUnitTests
 {
     [Fact]
-    public void Post_ValidRequest_ReturnsNewItem()
+    public void Post_CreateValidRequest_ReturnsCreatedAtAction()
     {
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
-        var controller = new ToDoItemsController(null, repositoryMock); // Docasny hack, nez z controlleru odstranime context.
+        var controller = new ToDoItemsController(repositoryMock);
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
@@ -29,6 +29,9 @@ public class PostUnitTests
 
         // Assert
         Assert.IsType<CreatedAtActionResult>(resultResult);
+        repositoryMock.Received(1).Create(Arg.Any<ToDoItem>());
+
+        // These asserts are optional
         Assert.NotNull(value);
 
         Assert.Equal(request.Description, value.Description);
@@ -37,11 +40,11 @@ public class PostUnitTests
     }
 
     [Fact]
-    public void Post_UnhandledException_Returns500()
+    public void Post_CreateUnhandledException_ReturnsInternalServerError()
     {
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
-        var controller = new ToDoItemsController(null, repositoryMock); // Docasny hack, nez z controlleru odstranime context.
+        var controller = new ToDoItemsController(repositoryMock);
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
