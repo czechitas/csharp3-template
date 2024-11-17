@@ -1,0 +1,31 @@
+﻿@rendermode InteractiveServer
+
+<h1>Dashboard</h1>
+<table>
+    @foreach (var toDoItem in toDoItems)
+    {
+        <tr>
+            <td>@toDoItem.ToDoItemId</td>
+            <td>@toDoItem.Name</td>
+            <td>@toDoItem.IsCompleted</td>
+            <td>@toDoItem.Description</td>
+        </tr>
+    }
+</table>
+
+@code
+{
+    private List<ToDoItemView> toDoItems =
+    [
+        new ToDoItemView() {ToDoItemId = 1, Name = "Udelat ukol na Czechitas", IsCompleted = false},
+        new ToDoItemView() {ToDoItemId = 2, Name = "Udelat nepovinny ukol na Czechitas", IsCompleted = false}
+    ];
+
+    public class ToDoItemView
+    {
+        public int ToDoItemId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public bool IsCompleted { get; set; }
+    }
+}
