@@ -1,75 +1,35 @@
 ﻿@rendermode InteractiveServer
 
-<h1>DashBoard</h1>
-<!--@((MarkupString)GenerateTable())-->
-<table>
-    <thead>
-        <tr>
-            <th>
-                ID Seřadit
-                <button @onclick="OrderById">@((isSortedByIdAscending ? "Od nejvyššího" : "Od nejnižšího"))</button>
-            </th>
-            <th>
-                Name Seřadit
-                <button @onclick="OrderByName">@((isSortedByNameAscending ? "Z-A" : "A-Z"))</button>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
+<h1>Dashboard</h1>
 
-        @foreach (var todoItem in toDoItems)
-        {
-            <tr>
-                <td>@todoItem.ToDoItemId</td>
-                <td>@todoItem.Name</td>
-            </tr>
-        }
-    </tbody>
+<table>
+    <tr>
+        <td><button @onclick="OrderById">Seradit Podle Id</button></td>
+        <td><button @onclick="OrderByName">Seradit Podle Jmena</button></td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    @foreach(var toDoItem in toDoItems)
+    {
+        <tr>
+            <td>@toDoItem.ToDoItemId</td>
+            <td>@toDoItem.Name</td>
+            <td>@toDoItem.Description</td>
+            <td>@toDoItem.IsCompleted</td>
+        </tr>
+    }
 </table>
 
-@code {
-/* public string GenerateTable()
+
+@code
 {
-    var html = new System.Text.StringBuilder();
-    html.Append("<table>");
-    foreach (var todoitem in toDoItems)
-    {
-        html.Append("<tr>");
-        html.Append($"<td>{todoitem.ToDoItemId}</td>");
-        html.Append($"<td>{todoitem.Name}</td>");
-        html.Append("</tr>");
-    }
-    html.Append("</table>");
-    return html.ToString();
-}*/
-    private List<ToDoItemView> toDoItems = new List<ToDoItemView>
-    {
-        new ToDoItemView { ToDoItemId = 1, Name = "Udělat úkol na Czechitas", IsCompleted = false },
-        new ToDoItemView { ToDoItemId = 2, Name = "Udělat nepovinný úkol na Czechitas", IsCompleted = false }
-    };
-
-    private bool isSortedByIdAscending = true;
-    private bool isSortedByNameAscending = true;
-
-    private void OrderById()
-    {
-        if (isSortedByIdAscending)
-            toDoItems = toDoItems.OrderByDescending(item => item.ToDoItemId).ToList();
-        else
-            toDoItems = toDoItems.OrderBy(item => item.ToDoItemId).ToList();
-
-        isSortedByIdAscending = !isSortedByIdAscending;
-    }
-
-    private void OrderByName()
-    {
-        if (isSortedByNameAscending)
-            toDoItems = toDoItems.OrderByDescending(item => item.Name).ToList();
-        else
-            toDoItems = toDoItems.OrderBy(item => item.Name).ToList();
-
-        isSortedByNameAscending = !isSortedByNameAscending;
-    }
+    private List<ToDoItemView> toDoItems =
+    [
+        new ToDoItemView(){ToDoItemId = 100, Name = "Udelat ukol", IsCompleted = false},
+        new ToDoItemView(){ToDoItemId = 2, Name = "Make some noise",Description="Party Hard", IsCompleted = true},
+        new ToDoItemView(){ToDoItemId = 3, Name = "A Koupit sacky do kose", IsCompleted = false}
+    ];
 
     public class ToDoItemView
     {
@@ -77,5 +37,15 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsCompleted { get; set; }
+    }
+
+    public void OrderByName()
+    {
+        toDoItems = toDoItems.OrderBy(x => x.Name).ToList();
+    }
+
+    public void OrderById()
+    {
+        toDoItems = toDoItems.OrderBy(x => x.ToDoItemId).ToList();
     }
 }
