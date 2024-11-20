@@ -13,22 +13,30 @@
         <td></td>
     </tr>
 
-    @foreach (var toDoItem in toDoItems)
+    @if (toDoItems is null)
     {
-        <tr>
-            <td>@toDoItem.ToDoItemId</td>
-            <td>@toDoItem.Name</td>
-            <td>@toDoItem.Description</td>
-            <td>@toDoItem.IsCompleted</td>
-        </tr>
+        <p>Nacitam...</p>
+    }
+
+    @if (toDoItems is not null)
+    {
+        @foreach (var toDoItem in toDoItems)
+        {
+            <tr>
+                <td>@toDoItem.ToDoItemId</td>
+                <td>@toDoItem.Name</td>
+                <td>@toDoItem.Description</td>
+                <td>@toDoItem.IsCompleted</td>
+            </tr>
+        }
     }
 </table>
 
 @code
 {
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        toDoItems = ToDoItemsClient.ReadItems();
+        toDoItems = await ToDoItemsClient.ReadItemsAsync();
     }
 
     private List<ToDoItemView>? toDoItems;

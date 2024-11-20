@@ -3,5 +3,5 @@ using ToDoList.Frontend.Views;
 
 public interface IToDoItemsClient
 {
-    public List<ToDoItemView> ReadItems();
+    public Task<List<ToDoItemView>> ReadItemsAsync();
 }

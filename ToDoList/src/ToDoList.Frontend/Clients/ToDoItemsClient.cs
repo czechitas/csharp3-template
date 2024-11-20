@@ -5,12 +5,12 @@ using ToDoList.Frontend.Views;
 
 public class ToDoItemsClient(HttpClient httpClient) : IToDoItemsClient
 {
-    public List<ToDoItemView> ReadItems()
+    public async Task<List<ToDoItemView>> ReadItemsAsync()
     {
         var toDoItemsView = new List<ToDoItemView>();
-        var response = httpClient.GetFromJsonAsync<List<ToDoItemGetResponseDto>>("api/ToDoItems");
+        var response = await httpClient.GetFromJsonAsync<List<ToDoItemGetResponseDto>>("api/ToDoItems");
 
-        toDoItemsView = response.Result.Select(dto => new ToDoItemView
+        toDoItemsView = response.Select(dto => new ToDoItemView
         {
             ToDoItemId = dto.Id,
             Name = dto.Name,
