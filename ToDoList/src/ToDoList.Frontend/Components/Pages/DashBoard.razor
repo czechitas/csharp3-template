@@ -1,43 +1,76 @@
 ﻿@rendermode InteractiveServer
 
 <h1>DashBoard</h1>
-
-<!--<table>
-    <tr>
-        <td> Prvni hodnota</td>
-        <td> Druha hotnota</td>
-    </tr>
-
-    <tr>
-        <td> Prvni hodnota druhy radek</td>
-        <td> Druha hotnota druhy radek </td>
-    </tr>
-
-
-
-</table>
--->
-
+<!--@((MarkupString)GenerateTable())-->
 <table>
- @foreach(var toDoItem in toDoItems)
- {
-    <tr>
-        <td>@toDoItem.ToDoItemId</td>
-        <td>@toDoItem.Name</td>
-        <td>@toDoItem.IsCompleted</td>
-        <td>@toDoItem.Description</td>
-    </tr>
+    <thead>
+        <tr>
+            <th>
+                ID Seřadit
+                <button @onclick="OrderById">@((isSortedByIdAscending ? "Od nejvyššího" : "Od nejnižšího"))</button>
+            </th>
+            <th>
+                Name Seřadit
+                <button @onclick="OrderByName">@((isSortedByNameAscending ? "Z-A" : "A-Z"))</button>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
 
- }
+        @foreach (var todoItem in toDoItems)
+        {
+            <tr>
+                <td>@todoItem.ToDoItemId</td>
+                <td>@todoItem.Name</td>
+            </tr>
+        }
+    </tbody>
 </table>
 
-@code
+@code {
+/* public string GenerateTable()
 {
+    var html = new System.Text.StringBuilder();
+    html.Append("<table>");
+    foreach (var todoitem in toDoItems)
+    {
+        html.Append("<tr>");
+        html.Append($"<td>{todoitem.ToDoItemId}</td>");
+        html.Append($"<td>{todoitem.Name}</td>");
+        html.Append("</tr>");
+    }
+    html.Append("</table>");
+    return html.ToString();
+}*/
+    private List<ToDoItemView> toDoItems = new List<ToDoItemView>
+    {
+        new ToDoItemView { ToDoItemId = 1, Name = "Udělat úkol na Czechitas", IsCompleted = false },
+        new ToDoItemView { ToDoItemId = 2, Name = "Udělat nepovinný úkol na Czechitas", IsCompleted = false }
+    };
 
-    private List<ToDoItemView> toDoItems = [
-    new ToDoItemView() {ToDoItemId = 1, Name = "Udelat ukol na Czechitas", IsCompleted = false},
-new ToDoItemView() {ToDoItemId = 2, Name = "Udelat nepovinny ukol na Czechitas", IsCompleted = false}
-    ];
+    private bool isSortedByIdAscending = true;
+    private bool isSortedByNameAscending = true;
+
+    private void OrderById()
+    {
+        if (isSortedByIdAscending)
+            toDoItems = toDoItems.OrderByDescending(item => item.ToDoItemId).ToList();
+        else
+            toDoItems = toDoItems.OrderBy(item => item.ToDoItemId).ToList();
+
+        isSortedByIdAscending = !isSortedByIdAscending;
+    }
+
+    private void OrderByName()
+    {
+        if (isSortedByNameAscending)
+            toDoItems = toDoItems.OrderByDescending(item => item.Name).ToList();
+        else
+            toDoItems = toDoItems.OrderBy(item => item.Name).ToList();
+
+        isSortedByNameAscending = !isSortedByNameAscending;
+    }
+
     public class ToDoItemView
     {
         public int ToDoItemId { get; set; }
