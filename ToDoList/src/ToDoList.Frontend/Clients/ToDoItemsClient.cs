@@ -3,14 +3,8 @@ namespace ToDoList.Frontend.Clients;
 using ToDoList.Domain.DTOs;
 using ToDoList.Frontend.Views;
 
-public class ToDoItemsClient : IToDoItemsClient
+public class ToDoItemsClient(HttpClient httpClient) : IToDoItemsClient
 {
-    private readonly HttpClient httpClient;
-    public ToDoItemsClient(HttpClient httpClient)
-    {
-        httpClient = httpClient;
-    }
-
     public List<ToDoItemView> ReadItems()
     {
         var toDoItemsView = new List<ToDoItemView>();

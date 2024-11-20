@@ -26,14 +26,19 @@
 
 @code
 {
-    private List<ToDoItemView> toDoItems = ToDoItemsClient.ReadItems();
+    protected override void OnInitialized()
+    {
+        toDoItems = ToDoItemsClient.ReadItems();
+    }
+
+    private List<ToDoItemView>? toDoItems;
 
     public void OrderByName()
     {
-        toDoItems = toDoItems.OrderBy(item => item.Name).ToList();
+        toDoItems = toDoItems?.OrderBy(item => item.Name).ToList();
     }
     public void OrderById()
     {
-        toDoItems = toDoItems.OrderBy(item => item.ToDoItemId).ToList();
+        toDoItems = toDoItems?.OrderBy(item => item.ToDoItemId).ToList();
     }
 }
