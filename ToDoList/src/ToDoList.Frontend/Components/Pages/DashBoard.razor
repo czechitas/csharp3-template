@@ -1,4 +1,7 @@
-﻿@rendermode InteractiveServer
+﻿@using ToDoList.Frontend.Views
+@using ToDoList.Frontend.Clients
+@inject IToDoItemsClient ToDoItemsClient
+@rendermode InteractiveServer
 
 <h1>Dashboard</h1>
 
@@ -9,7 +12,10 @@
         <td></td>
         <td></td>
     </tr>
+@if(toDoItems!=null)
+{
 
+}
     @foreach(var toDoItem in toDoItems)
     {
         <tr>
@@ -24,28 +30,19 @@
 
 @code
 {
-    private List<ToDoItemView> toDoItems =
-    [
-        new ToDoItemView(){ToDoItemId = 100, Name = "Udelat ukol", IsCompleted = false},
-        new ToDoItemView(){ToDoItemId = 2, Name = "Make some noise",Description="Party Hard", IsCompleted = true},
-        new ToDoItemView(){ToDoItemId = 3, Name = "A Koupit sacky do kose", IsCompleted = false}
-    ];
-
-    public class ToDoItemView
+    protected override async Task OnInitializedAsync()
     {
-        public int ToDoItemId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public bool IsCompleted { get; set; }
+        toDoItems = await ToDoItemsClient.ReadItemsAsync();
     }
+    private List<ToDoItemView>? toDoItems = [];
 
     public void OrderByName()
     {
-        toDoItems = toDoItems.OrderBy(x => x.Name).ToList();
+        toDoItems = toDoItems?.OrderBy(x => x.Name).ToList();
     }
 
     public void OrderById()
     {
-        toDoItems = toDoItems.OrderBy(x => x.ToDoItemId).ToList();
+        toDoItems = toDoItems?.OrderBy(x => x.ToDoItemId).ToList();
     }
 }
