@@ -10,6 +10,9 @@ builder.Services.AddRazorComponents()
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5000") });
 builder.Services.AddScoped<IToDoItemsClient, ToDoItemsClient>();
 
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5000") });
+builder.Services.AddScoped<IToDoItemsClient, ToDoItemsClient>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
