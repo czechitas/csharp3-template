@@ -10,7 +10,7 @@ using ToDoList.WebApi.Controllers;
 public class PutTests
 {
     [Fact]
-    public void Put_ValidId_ReturnsNoContent()
+    public async Task Put_ValidId_ReturnsNoContent()
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
@@ -32,14 +32,14 @@ public class PutTests
         );
 
         // Act
-        var result = controller.UpdateById(toDoItem.ToDoItemId, request);
+        var result = await controller.UpdateByIdAsync(toDoItem.ToDoItemId, request);
 
         // Assert
         Assert.IsType<NoContentResult>(result);
     }
 
     [Fact]
-    public void Put_InvalidId_ReturnsNotFound()
+    public async Task Put_InvalidId_ReturnsNotFound()
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
@@ -62,7 +62,7 @@ public class PutTests
 
         // Act
         var invalidId = -1;
-        var result = controller.UpdateById(invalidId, request);
+        var result = await controller.UpdateByIdAsync(invalidId, request);
 
         // Assert
         Assert.IsType<NotFoundResult>(result);

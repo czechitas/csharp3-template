@@ -9,7 +9,7 @@ using ToDoList.WebApi.Controllers;
 public class GetTests
 {
     [Fact]
-    public void Get_AllItems_ReturnsAllItems()
+    public async Task Get_AllItems_ReturnsAllItems()
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
@@ -26,7 +26,7 @@ public class GetTests
         context.SaveChanges();
 
         // Act
-        var result = controller.Read();
+        var result =await controller.ReadAsync();
         var resultResult = result.Result;
         var value = result.GetValue();
 

@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     //Persistence services
     builder.Services.AddDbContext<ToDoItemsContext>(); // pridalo ToDoItemsContext
-    builder.Services.AddScoped<IRepository<ToDoItem>, ToDoItemsRepository>(); // pridalo ToDoItemsRepository
+    builder.Services.AddScoped<IRepositoryAsync<ToDoItem>, ToDoItemsRepository>(); // pridalo ToDoItemsRepository
 }
 
 var app = builder.Build();

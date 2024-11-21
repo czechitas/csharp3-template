@@ -9,7 +9,7 @@ using ToDoList.WebApi.Controllers;
 public class DeleteTests
 {
     [Fact]
-    public void Delete_ValidId_ReturnsNoContent()
+    public async void Delete_ValidId_ReturnsNoContent()
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
@@ -25,14 +25,14 @@ public class DeleteTests
         context.SaveChanges();
 
         // Act
-        var result = controller.DeleteById(toDoItem.ToDoItemId);
+        var result = await controller.DeleteByIdAsync(toDoItem.ToDoItemId);
 
         // Assert
         Assert.IsType<NoContentResult>(result);
     }
 
     [Fact]
-    public void Delete_InvalidId_ReturnsNotFound()
+    public async void Delete_InvalidId_ReturnsNotFound()
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
@@ -49,7 +49,7 @@ public class DeleteTests
 
         // Act
         var invalidId = -1;
-        var result = controller.DeleteById(invalidId);
+        var result =await controller.DeleteByIdAsync(invalidId);
 
         // Assert
         Assert.IsType<NotFoundResult>(result);
