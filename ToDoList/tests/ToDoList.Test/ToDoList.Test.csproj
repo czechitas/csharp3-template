@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\ToDoList.Persistence\ToDoList.Persistence.csproj" />
     <ProjectReference Include="..\..\src\ToDoList.WebApi\ToDoList.WebApi.csproj" />
     <ProjectReference Include="..\..\src\ToDoList.Domain\ToDoList.Domain.csproj" />
   </ItemGroup>

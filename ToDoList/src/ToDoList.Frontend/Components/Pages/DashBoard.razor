@@ -1,0 +1,48 @@
+﻿@using ToDoList.Frontend.Views
+@using ToDoList.Frontend.Clients
+@inject IToDoItemsClient ToDoItemsClient
+@rendermode InteractiveServer
+
+<h1>Dashboard</h1>
+
+<table>
+    <tr>
+        <td><button @onclick="OrderById">Seradit Podle Id</button></td>
+        <td><button @onclick="OrderByName">Seradit Podle Jmena</button></td>
+        <td></td>
+        <td></td>
+    </tr>
+@if(toDoItems!=null)
+{
+
+}
+    @foreach(var toDoItem in toDoItems)
+    {
+        <tr>
+            <td>@toDoItem.ToDoItemId</td>
+            <td>@toDoItem.Name</td>
+            <td>@toDoItem.Description</td>
+            <td>@toDoItem.IsCompleted</td>
+        </tr>
+    }
+</table>
+
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        toDoItems = await ToDoItemsClient.ReadItemsAsync();
+    }
+    private List<ToDoItemView>? toDoItems = [];
+
+    public void OrderByName()
+    {
+        toDoItems = toDoItems?.OrderBy(x => x.Name).ToList();
+    }
+
+    public void OrderById()
+    {
+        toDoItems = toDoItems?.OrderBy(x => x.ToDoItemId).ToList();
+    }
+}
