@@ -21,7 +21,8 @@ public class ToDoItemsRepository : IRepository<ToDoItem>
     public ToDoItem? ReadById(int id) => context.ToDoItems.Find(id);
     public void Update(ToDoItem item)
     {
-        context.Entry(item).CurrentValues.SetValues(item);
+        var foundItem = context.ToDoItems.Find(item.ToDoItemId) ?? throw new Exception($"Item with ID {item.ToDoItemId} not found.");
+        context.Entry(foundItem).CurrentValues.SetValues(item);
         context.SaveChanges();
     }
 
