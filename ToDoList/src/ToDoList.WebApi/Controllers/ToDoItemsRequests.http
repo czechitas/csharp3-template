@@ -9,7 +9,7 @@ GET {{host}}:{{port}}/api/ToDoItems
 ###
 
 //Get specific ToDoItem by id
-@itemToGetId = 1
+@itemToGetId = 33
 GET {{host}}:{{port}}/api/ToDoItems/{{itemToGetId}}
 
 ###
