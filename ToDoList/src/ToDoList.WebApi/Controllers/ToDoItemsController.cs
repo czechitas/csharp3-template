@@ -40,6 +40,7 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpGet]
+    [ActionName(nameof(ReadByIdAsync))]
     public async Task<ActionResult<IEnumerable<ToDoItemGetResponseDto>>> ReadAsync()
     {
         IEnumerable<ToDoItem> itemsToGet;

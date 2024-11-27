@@ -17,7 +17,7 @@ public class ToDoItemsRepository : IRepositoryAsync<ToDoItem>
 
     public async Task CreateAsync(ToDoItem item)
     {
-        await context.ToDoItems.AddAsync(item); 
+        await context.ToDoItems.AddAsync(item);
         await context.SaveChangesAsync();
     }
 
@@ -31,12 +31,12 @@ public class ToDoItemsRepository : IRepositoryAsync<ToDoItem>
         return await context.ToDoItems.FindAsync(id);
     }
 
-    public async Task UpdateAsync(ToDoItem item)
+     public async Task UpdateAsync(ToDoItem item)
     {
-        context.Entry(item).CurrentValues.SetValues(item);
-        await context.SaveChangesAsync();
+        var foundItem = await context.ToDoItems.FindAsync(item.ToDoItemId) ?? throw new ArgumentOutOfRangeException($"ToDo item with ID {item.ToDoItemId} not found.");
+        context.Entry(foundItem).CurrentValues.SetValues(item);
+        context.SaveChangesAsync();
     }
-
     public async Task DeleteAsync(ToDoItem item)
     {
         context.ToDoItems.Remove(item);
