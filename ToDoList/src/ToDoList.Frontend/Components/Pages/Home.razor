@@ -1,27 +1,55 @@
 ﻿@page "/"
 @rendermode InteractiveServer
+<PageTitle>Domovska stranka</PageTitle>
 
-<PageTitle>Home</PageTitle>
+<DashBoard/>
 
-<Dashboard />
+<!--<h1>@AhojSvete()</h1>
 
-<h1>@ahojSvete</h1>
-
-Vítej v mojí aplikaci.
+Vítej v moji aplikaci.
 <br>
-<button @onclick="Increment">Moje tlačítko</button>
-
+<button @onclick="Increment"> Moje tlačítko</button>
 <br>
-Hodnota počítadla: @counter;
 
+Hodnota počítadla: @counter
+
+<h2> Tohle je nadpis druhe urovne</h2>
+<p> Tohle je odstavec <br> se zalomenym textem</p>
+@VypisCisla1Az10();
+
+
+<ul>
+    <li> polozka 1 </li>
+    <li> polozka 2</li>
+</ul>
+<ol>
+    <li>První položka</li>
+    <li>Druhá položka</li>
+    <li>Třetí položka</li>
+</ol>
 @code
 {
-    string ahojSvete = "Ahoj světe ještě jednou!";
-
     int counter = 0;
-
     public void Increment()
     {
         counter++;
     }
+
+    string ahojSvete = "Ahoj světe přes c#!";
+
+    public string AhojSvete()
+    {
+        return "Ahoj světe přes c# z metody";
+    }
+
+    public string VypisCisla1Az10()
+    {
+        string vypis = "";
+        for (int i = 1; i < 10; i++)
+        {
+            vypis += i;
+        }
+        return vypis;
+    }-->
+
 }

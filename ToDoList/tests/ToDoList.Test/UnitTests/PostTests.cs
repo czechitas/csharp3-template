@@ -11,25 +11,26 @@ using Microsoft.AspNetCore.Http;
 public class PostUnitTests
 {
     [Fact]
-    public void Post_CreateValidRequest_ReturnsCreatedAtAction()
+    public async Task Post_CreateValidRequest_ReturnsCreatedAtAction()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
-            IsCompleted: false
+            IsCompleted: false,
+            Category: null
         );
 
         // Act
-        var result = controller.Create(request);
+        var result = await controller.CreateAsync(request);
         var resultResult = result.Result;
         var value = result.GetValue();
 
         // Assert
         Assert.IsType<CreatedAtActionResult>(resultResult);
-        repositoryMock.Received(1).Create(Arg.Any<ToDoItem>());
+        await repositoryMock.Received(1).CreateAsync(Arg.Any<ToDoItem>());
 
         // These asserts are optional
         Assert.NotNull(value);
@@ -40,20 +41,22 @@ public class PostUnitTests
     }
 
     [Fact]
-    public void Post_CreateUnhandledException_ReturnsInternalServerError()
+    public async Task Post_CreateUnhandledException_ReturnsInternalServerError()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
-            IsCompleted: false
+            IsCompleted: false,
+            Category: null
+
         );
-        repositoryMock.When(r => r.Create(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
+        repositoryMock.When(r => r.CreateAsync(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
 
         // Act
-        var result = controller.Create(request);
+        var result = await controller.CreateAsync(request);
         var resultResult = result.Result;
 
         // Assert

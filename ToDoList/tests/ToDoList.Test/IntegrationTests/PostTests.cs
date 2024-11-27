@@ -9,7 +9,7 @@ using ToDoList.WebApi.Controllers;
 public class PostTests
 {
     [Fact]
-    public void Post_ValidRequest_ReturnsNewItem()
+    public async void Post_ValidRequest_ReturnsNewItem()
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
@@ -18,11 +18,12 @@ public class PostTests
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",
-            IsCompleted: false
+            IsCompleted: false,
+            Category: null
         );
 
         // Act
-        var result = controller.Create(request);
+        var result = await controller.CreateAsync(request);
         var resultResult = result.Result;
         var value = result.GetValue();
 
