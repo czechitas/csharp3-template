@@ -1,4 +1,5 @@
 ﻿@page "/editToDoItem/{ItemId:int}"
+@using System.Diagnostics
 @using ToDoList.Frontend.Views
 @using ToDoList.Frontend.Clients
 @inject NavigationManager NavigationManager
@@ -33,12 +34,23 @@
         {
             itemView = retrievedItem;
         }
+
+        BasicDelegate += SomeDelegateMethod;
+        ActionDelegate += SomeDelegateMethod;
+
+        ActionDelegate += (itemView) =>
+        {
+            var stackTrace = new StackTrace();
+            var method = stackTrace.GetFrame(0)?.GetMethod();
+            Console.WriteLine($"{method}: Item with id {itemView.ToDoItemId} has been submitted.");
+        };
     }
 
     [Parameter]
     public int ItemId { get; set; }
 
     [SupplyParameterFromForm]
+
     public ToDoItemView itemView { get; set; } = new ToDoItemView
         {
             ToDoItemId = 0,
@@ -47,8 +59,21 @@
             IsCompleted = false
         };
 
+    public Action<ToDoItemView>? ActionDelegate;
+    public BasicDelegateType? BasicDelegate;
+    public delegate void BasicDelegateType(ToDoItemView itemView);
+
+    public void SomeDelegateMethod(ToDoItemView itemView)
+    {
+        var stackTrace = new StackTrace();
+        var method = stackTrace.GetFrame(0)?.GetMethod();
+        Console.WriteLine($"{method}: Item with id {itemView.ToDoItemId} has been submitted.");
+    }
+
     public async Task Submit()
     {
+        BasicDelegate?.Invoke(itemView);
+        ActionDelegate?.Invoke(itemView);
         await ToDoItemsClient.UpdateItemAsync(itemView);
         NavigationManager.NavigateTo("/");
     }
