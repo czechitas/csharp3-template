@@ -5,14 +5,21 @@
 @inject IToDoItemsClient ToDoItemsClient
 @rendermode InteractiveServer
 
-<PageTitle>Edit To Do Item</PageTitle>
+<PageTitle>Edit ToDoItem</PageTitle> @*this needs be renamed*@
 
-@if (ToDoItem is not null)
+@if (itemView is not null)
 {
-    <EditForm Model="ToDoItem" FormName="EditToDoItem" OnSubmit="Submit">
-        <InputText id="Name" @bind-Value="ToDoItem.Name" />
-        <InputText id="Description" @bind-Value="ToDoItem.Description" />
-        <InputCheckbox id="IsCompleted" @bind-Value="ToDoItem.IsCompleted" />
+    <EditForm Model="itemView" FormName="EditToDoItem" OnValidSubmit="Submit"> @*OnValidSubmit*@
+        <DataAnnotationsValidator />
+        <label for="Name" class="form-label">Name:</label>
+        <InputText id="Name" class="form-control" @bind-Value="itemView.Name" />
+        <ValidationMessage For="() => itemView.Name" />
+        <label for="Description" class="form-label">Description:</label>
+        <InputText id="Description" class="form-control" @bind-Value="itemView.Description" />
+        <ValidationMessage For="() => itemView.Description" />
+        <label for="IsCompleted" class="form-check-label">IsCompleted:</label>
+        <InputCheckbox id="IsCompleted" class="form-check" @bind-Value="itemView.IsCompleted" />
+        <ValidationMessage For="() => itemView.IsCompleted" />
         <button type="submit">Submit</button>
     </EditForm>
 }
@@ -21,18 +28,28 @@
 {
     protected override async Task OnInitializedAsync()
     {
-        ToDoItem = await ToDoItemsClient.ReadItemByIdAsync(ItemId);
+        ToDoItemView? retrievedItem = await ToDoItemsClient.ReadItemByIdAsync(ItemId);
+        if (retrievedItem is not null)
+        {
+            itemView = retrievedItem;
+        }
     }
 
     [Parameter]
     public int ItemId { get; set; }
 
     [SupplyParameterFromForm]
-    public ToDoItemView ToDoItem { get; set; }
+    public ToDoItemView itemView { get; set; } = new ToDoItemView
+        {
+            ToDoItemId = 0,
+            Name = string.Empty,
+            Description = string.Empty,
+            IsCompleted = false
+        };
 
     public async Task Submit()
     {
-        await ToDoItemsClient.UpdateItemAsync(ToDoItem);
+        await ToDoItemsClient.UpdateItemAsync(itemView);
         NavigationManager.NavigateTo("/");
     }
 }
