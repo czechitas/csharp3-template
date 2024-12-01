@@ -11,6 +11,6 @@ public class ToDoItem
     [StringLength(250)]
     public string Description { get; set; }
     public bool IsCompleted { get; set; }
-
+    [StringLength(250)]
     public string? Category { get; set; }
 }

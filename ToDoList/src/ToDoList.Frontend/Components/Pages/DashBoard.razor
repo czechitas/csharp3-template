@@ -1,30 +1,46 @@
 ﻿@using ToDoList.Frontend.Views
 @using ToDoList.Frontend.Clients
+@inject NavigationManager NavigationManager
 @inject IToDoItemsClient ToDoItemsClient
 @rendermode InteractiveServer
 
 <h1>Dashboard</h1>
-
-<table>
-    <tr>
-        <td><button @onclick="OrderById">Seradit Podle Id</button></td>
-        <td><button @onclick="OrderByName">Seradit Podle Jmena</button></td>
-        <td></td>
-        <td></td>
-    </tr>
-@if(toDoItems!=null)
-{
-
-}
-    @foreach(var toDoItem in toDoItems)
-    {
+<button class="btn btn-dark" @onclick="OrderById">@((isSortedByIdAscending ? "Od nejvyššího" : "Od nejnižšího"))</button>
+<button class ="btn btn-dark" @onclick="OrderByName">@((isSortedByNameAscending ? "Z-A" : "A-Z"))</button>
+<table class="table table-hover">
+    <thead class="table-dark">
         <tr>
-            <td>@toDoItem.ToDoItemId</td>
-            <td>@toDoItem.Name</td>
-            <td>@toDoItem.Description</td>
-            <td>@toDoItem.IsCompleted</td>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>IsCompleted</th>
+            <th>Category</th>
+            <th class="w-auto">Actions</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @if (toDoItems is not null)
+        {
+            @foreach (var toDoItem in toDoItems)
+            {
+            <tr class="@GetCorrectClassForTableLine(toDoItem.IsCompleted)">
+                    <td>@toDoItem.ToDoItemId</td>
+                    <td>@toDoItem.Name</td>
+                    <td>@toDoItem.Description</td>
+                    <td>@toDoItem.IsCompleted</td>
+                    <td>@toDoItem.Category</td>
+                    <td><div class="btn-group" role="group">
+                    <button class="btn btn-success" @onclick="() => EditItem(toDoItem)"><i class="bi bi-pencil-square"></i></button>
+                    <button class="btn btn-danger" @onclick="() => DeleteItem(toDoItem)"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-warning btn-sm" @onclick="() => ToggleCompletion(toDoItem)"><i class="bi @(toDoItem.IsCompleted ? "bi-check-circle" : "bi-circle")"></i></button>
+                    </div>
+                    </td>
+
+
+                </tr>
+            }
+        }
+    </tbody>
 </table>
 
 
@@ -36,13 +52,49 @@
     }
     private List<ToDoItemView>? toDoItems = [];
 
-    public void OrderByName()
+
+    private bool isSortedByIdAscending = true;
+    private bool isSortedByNameAscending = true;
+
+    private void OrderById()
     {
-        toDoItems = toDoItems?.OrderBy(x => x.Name).ToList();
+        if (isSortedByIdAscending)
+            toDoItems = toDoItems.OrderByDescending(item => item.ToDoItemId).ToList();
+        else
+            toDoItems = toDoItems.OrderBy(item => item.ToDoItemId).ToList();
+
+        isSortedByIdAscending = !isSortedByIdAscending;
     }
 
-    public void OrderById()
+    private void OrderByName()
     {
-        toDoItems = toDoItems?.OrderBy(x => x.ToDoItemId).ToList();
+        if (isSortedByNameAscending)
+            toDoItems = toDoItems.OrderByDescending(item => item.Name).ToList();
+        else
+            toDoItems = toDoItems.OrderBy(item => item.Name).ToList();
+
+        isSortedByNameAscending = !isSortedByNameAscending;
+    }
+
+    protected string GetCorrectClassForTableLine(bool isCompleted)
+    {
+        return isCompleted ? "table-success" : "table-secondary";
+    }
+    public void EditItem(ToDoItemView toDoItem)
+    {
+        NavigationManager.NavigateTo($"editToDoItem/{toDoItem.ToDoItemId}");
+    }
+    public async Task DeleteItem(ToDoItemView ToDoItemId)
+    {
+      await ToDoItemsClient.DeleteItemAsync(ToDoItemId);
+      toDoItems = await ToDoItemsClient.ReadItemsAsync();
+    }
+
+     public async Task ToggleCompletion(ToDoItemView toDoItem)
+    {
+        toDoItem.IsCompleted = !toDoItem.IsCompleted;
+        await ToDoItemsClient.UpdateItemAsync(toDoItem);
+        toDoItems = await ToDoItemsClient.ReadItemsAsync();
     }
 }
+

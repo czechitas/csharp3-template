@@ -1,0 +1,65 @@
+﻿@using ToDoList.Frontend.Views
+@using ToDoList.Frontend.Clients
+@page "/editToDoItem/{ItemId:int}"
+@inject NavigationManager NavigationManager
+@inject IToDoItemsClient ToDoItemsClient
+@rendermode InteractiveServer
+<PageTitle>Editování To Do Item</PageTitle>
+@if (ToDoItem is not null)
+{
+
+    <EditForm Model="ToDoItem" FormName="EditToDoItem" OnSubmit="Submit">
+        <div class="form-group">
+            <label for="Name">Název</label>
+            <div>
+                <InputText id="Name" @bind-Value="ToDoItem.Name" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Description">Popis</label>
+            <div>
+                <InputText id="Description" @bind-Value="ToDoItem.Description" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="IsCompleted">Je splněn</label>
+            <div>
+                <InputCheckbox id="IsCompleted" @bind-Value="ToDoItem.IsCompleted" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Category">Kategorie</label>
+            <div>
+                <InputText id="Category" @bind-Value="ToDoItem.Category"/>
+            </div>
+        </div>
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary" @onclick="Submit">Uložit</button>
+            <button type="button" class="btn btn-secondary" @onclick="Cancel">Zrušit</button>
+        </div>
+    </EditForm>
+
+
+}
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        ToDoItem = await ToDoItemsClient.ReadItemByIdAsync(ItemId);
+    }
+
+    [Parameter]
+    public int ItemId { get; set; }
+
+    [SupplyParameterFromForm]
+    public ToDoItemView ToDoItem { get; set; }
+    public async Task Submit()
+    {
+        await ToDoItemsClient.UpdateItemAsync(ToDoItem);
+        NavigationManager.NavigateTo("/");
+    }
+    public void Cancel()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}

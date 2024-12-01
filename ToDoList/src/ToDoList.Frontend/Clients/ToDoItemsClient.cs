@@ -7,7 +7,7 @@ public class ToDoItemsClient(HttpClient httpClient) : IToDoItemsClient //primary
 {
     public async Task CreateItemAsync(ToDoItemView itemView)
     {
-        var itemRequest = new ToDoItemCreateRequestDto(itemView.Name, itemView.Description, itemView.IsCompleted);
+        var itemRequest = new ToDoItemCreateRequestDto(itemView.Name, itemView.Description, itemView.IsCompleted, itemView.Category);
         try
         {
             var response = await httpClient.PostAsJsonAsync("api/ToDoItems", itemRequest);
@@ -65,6 +65,7 @@ public class ToDoItemsClient(HttpClient httpClient) : IToDoItemsClient //primary
                 Name = response.Name,
                 Description = response.Description,
                 IsCompleted = response.IsCompleted,
+                Category = response.Category
             };
         }
         catch (Exception e)
@@ -90,7 +91,8 @@ public class ToDoItemsClient(HttpClient httpClient) : IToDoItemsClient //primary
                 ToDoItemId = dto.Id,
                 Name = dto.Name,
                 Description = dto.Description,
-                IsCompleted = dto.IsCompleted
+                IsCompleted = dto.IsCompleted,
+                Category = dto.Category
             }).ToList();
         }
         catch (Exception e)
@@ -104,7 +106,7 @@ public class ToDoItemsClient(HttpClient httpClient) : IToDoItemsClient //primary
     {
         try
         {
-            var itemRequest = new ToDoItemUpdateRequestDto(itemView.Name, itemView.Description, itemView.IsCompleted);
+            var itemRequest = new ToDoItemUpdateRequestDto(itemView.Name, itemView.Description, itemView.IsCompleted,itemView.Category);
             var response = await httpClient.PutAsJsonAsync($"api/ToDoItems/{itemView.ToDoItemId}", itemRequest);
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
             {
