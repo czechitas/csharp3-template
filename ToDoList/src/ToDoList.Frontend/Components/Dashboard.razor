@@ -22,7 +22,7 @@
 
         @if (toDoItems is not null)
         {
-            @foreach (var toDoItem in toDoItems)
+            @foreach (var toDoItem in toDoItems.Where(CurrentFilter))
             {
                 <tr class="table-success">
                     <td>@toDoItem.ToDoItemId</td>
@@ -37,6 +37,9 @@
 </table>
 <button class="btn btn-success" @onclick="OrderById">Seradit Podle Id</button>
 <button class="btn btn-success" @onclick="OrderByName">Seradit Podle Jmena</button>
+<button class="btn btn-success" @onclick="ShowAll">Show All</button>
+<button class="btn btn-success" @onclick="ShowCompleted">Show Completed</button>
+<button class="btn btn-success" @onclick="ShowIncomplete">Show Incomplete</button>
 
 @code
 {
@@ -46,6 +49,7 @@
     }
 
     private List<ToDoItemView>? toDoItems;
+    private Func<ToDoItemView, bool> CurrentFilter = (item) => true;
 
     public void OrderByName()
     {
@@ -60,4 +64,8 @@
     {
         NavigationManager.NavigateTo($"editToDoItem/{toDoItem.ToDoItemId}");
     }
+
+    private void ShowAll() => CurrentFilter = item => true;
+    private void ShowCompleted() => CurrentFilter = item => item.IsCompleted;
+    private void ShowIncomplete() => CurrentFilter = item => !item.IsCompleted;
 }
