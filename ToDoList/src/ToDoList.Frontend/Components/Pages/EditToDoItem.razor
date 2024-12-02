@@ -7,10 +7,10 @@
 @rendermode InteractiveServer
 
 <PageTitle>Edit ToDoItem</PageTitle> @*this needs be renamed*@
-
+<h1>Edit</h1>
 @if (itemView is not null)
 {
-    <EditForm Model="itemView" FormName="EditToDoItem" OnValidSubmit="Submit"> @*OnValidSubmit*@
+    <EditForm Model="itemView" FormName="EditToDoItem" OnValidSubmit="Submit"> @*OnSubmit -> OnValidSubmit*@
         <DataAnnotationsValidator />
         <label for="Name" class="form-label">Name:</label>
         <InputText id="Name" class="form-control" @bind-Value="itemView.Name" />
@@ -36,6 +36,13 @@
         }
 
         BasicDelegate += SomeDelegateMethod;
+        BasicDelegate += (itemView) =>
+        {
+            var stackTrace = new StackTrace();
+            var method = stackTrace.GetFrame(0)?.GetMethod();
+            Console.WriteLine($"{method}: Item with id {itemView.ToDoItemId} has been submitted.");
+        };
+
         ActionDelegate += SomeDelegateMethod;
         ActionDelegate += (itemView) =>
         {
