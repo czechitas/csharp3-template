@@ -4,3 +4,39 @@
 <PageTitle>Home</PageTitle>
 
 <Dashboard />
+
+
+@code
+{
+    delegate int NumberOperationDelegate(int a, int b);
+    int Multiply(int a, int b)
+    {
+        Console.WriteLine("Multiply called.");
+        return a * b;
+    }
+    int Divide(int a, int b)
+    {
+        Console.WriteLine("Divide called.");
+        return a / b;
+    }
+
+    Func<int, int> cube = x => x * x * x;
+    Action<string> print = (msg) => Console.WriteLine($"Action called with message: {msg}");
+
+    protected override async Task OnInitializedAsync()
+    {
+        NumberOperationDelegate? numberOperationDelegate = null;
+        numberOperationDelegate += Multiply;
+        numberOperationDelegate += Divide;
+        @* numberOperationDelegate += Multiply; *@
+        Console.WriteLine(numberOperationDelegate.Invoke(4, 2));
+
+        Func<int, int, int>? numberOperationFunc = null;
+        numberOperationFunc += Multiply;
+        numberOperationFunc += Divide;
+        Console.WriteLine(numberOperationFunc?.Invoke(4, 2));
+
+        Console.WriteLine(cube(3));
+        print("My cool message.");
+    }
+}
