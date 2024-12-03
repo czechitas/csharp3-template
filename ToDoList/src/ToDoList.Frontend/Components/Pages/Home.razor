@@ -20,7 +20,7 @@
         return a / b;
     }
 
-    Func<int, int> cube = x => x * x * x;
+
     Action<string> print = (msg) => Console.WriteLine($"Action called with message: {msg}");
 
     protected override async Task OnInitializedAsync()
@@ -36,6 +36,7 @@
         numberOperationFunc += Divide;
         Console.WriteLine(numberOperationFunc?.Invoke(4, 2));
 
+        Func<int, int> cube = x => x * x * x;
         Console.WriteLine(cube(3));
         print("My cool message.");
     }

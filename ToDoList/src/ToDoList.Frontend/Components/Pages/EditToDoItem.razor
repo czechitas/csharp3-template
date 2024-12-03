@@ -35,13 +35,13 @@
             itemView = retrievedItem;
         }
 
-        BasicDelegate += SomeDelegateMethod;
+        @* BasicDelegate += SomeDelegateMethod;
         BasicDelegate += (itemView) =>
         {
             var stackTrace = new StackTrace();
             var method = stackTrace.GetFrame(0)?.GetMethod();
             Console.WriteLine($"{method}: Item with id {itemView.ToDoItemId} has been submitted.");
-        };
+        }; *@
 
         ActionDelegate += SomeDelegateMethod;
         ActionDelegate += (itemView) =>
@@ -65,15 +65,13 @@
             IsCompleted = false
         };
 
-    public Action<ToDoItemView>? ActionDelegate;
-    public BasicDelegateType? BasicDelegate;
-    public delegate void BasicDelegateType(ToDoItemView itemView);
+    private Action<ToDoItemView>? ActionDelegate;
+    private BasicDelegateType BasicDelegate;
+    private delegate void BasicDelegateType(ToDoItemView itemView);
 
     public void SomeDelegateMethod(ToDoItemView itemView)
     {
-        var stackTrace = new StackTrace();
-        var method = stackTrace.GetFrame(0)?.GetMethod();
-        Console.WriteLine($"{method}: Item with id {itemView.ToDoItemId} has been submitted.");
+        Console.WriteLine($"Item with id {itemView.ToDoItemId} has been submitted.");
     }
 
     public async Task Submit()
