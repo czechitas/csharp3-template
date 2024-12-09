@@ -35,11 +35,12 @@ public class ToDoItemsRepository : IRepositoryAsync<ToDoItem>
     {
         var foundItem = await context.ToDoItems.FindAsync(item.ToDoItemId) ?? throw new ArgumentOutOfRangeException($"ToDo item with ID {item.ToDoItemId} not found.");
         context.Entry(foundItem).CurrentValues.SetValues(item);
-        context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
     public async Task DeleteAsync(ToDoItem item)
     {
         context.ToDoItems.Remove(item);
         await context.SaveChangesAsync();
     }
+
 }

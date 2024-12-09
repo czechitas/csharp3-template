@@ -1,10 +1,12 @@
-﻿@using ToDoList.Frontend.Views
+﻿@using ToDoList.Domain.Models
+@using ToDoList.Frontend.Views
 @using ToDoList.Frontend.Clients
 @inject NavigationManager NavigationManager
 @inject IToDoItemsClient ToDoItemsClient
 @rendermode InteractiveServer
 
 <h1>Dashboard</h1>
+<button class="btn btn-primary" @onclick="() => CreateItem()">Add new Task</button>
 <button class="btn btn-dark" @onclick="OrderById">@((isSortedByIdAscending ? "Od nejvyššího" : "Od nejnižšího"))</button>
 <button class ="btn btn-dark" @onclick="OrderByName">@((isSortedByNameAscending ? "Z-A" : "A-Z"))</button>
 <table class="table table-hover">
@@ -50,7 +52,7 @@
     {
         toDoItems = await ToDoItemsClient.ReadItemsAsync();
     }
-    private List<ToDoItemView>? toDoItems = [];
+   private List<ToDoItemView>? toDoItems = new List<ToDoItemView>();
 
 
     private bool isSortedByIdAscending = true;
@@ -80,9 +82,13 @@
     {
         return isCompleted ? "table-success" : "table-secondary";
     }
+        public void CreateItem()
+    {
+        NavigationManager.NavigateTo("/editToDoItem?IsCreateMode=true");
+    }
     public void EditItem(ToDoItemView toDoItem)
     {
-        NavigationManager.NavigateTo($"editToDoItem/{toDoItem.ToDoItemId}");
+         NavigationManager.NavigateTo($"editToDoItem/{toDoItem.ToDoItemId}");
     }
     public async Task DeleteItem(ToDoItemView ToDoItemId)
     {

@@ -1,30 +1,36 @@
 ﻿@using ToDoList.Frontend.Views
 @using ToDoList.Frontend.Clients
+@page "/editToDoItem"
 @page "/editToDoItem/{ItemId:int}"
 @inject NavigationManager NavigationManager
 @inject IToDoItemsClient ToDoItemsClient
 @rendermode InteractiveServer
-<PageTitle>Editování To Do Item</PageTitle>
+<PageTitle>@(IsCreateMode ? "Vytvoření To Do Item" : "Editování To Do Item")</PageTitle>
 @if (ToDoItem is not null)
 {
 
-    <EditForm Model="ToDoItem" FormName="EditToDoItem" OnSubmit="Submit">
+    <EditForm Model="ToDoItem" FormName="EditToDoItem" OnValidSubmit="Submit"> @*OnSubmit-> OnValidSubmit*@
+        <DataAnnotationsValidator/>
         <div class="form-group">
             <label for="Name">Název</label>
             <div>
                 <InputText id="Name" @bind-Value="ToDoItem.Name" />
+                 <ValidationMessage For="() => ToDoItem.Name" />
             </div>
         </div>
         <div class="form-group">
             <label for="Description">Popis</label>
             <div>
                 <InputText id="Description" @bind-Value="ToDoItem.Description" />
+                  <ValidationMessage For="() => ToDoItem.Description" />
             </div>
         </div>
         <div class="form-group">
             <label for="IsCompleted">Je splněn</label>
             <div>
                 <InputCheckbox id="IsCompleted" @bind-Value="ToDoItem.IsCompleted" />
+                <ValidationMessage For="() => ToDoItem.IsCompleted" />
+
             </div>
         </div>
         <div class="form-group">
@@ -34,7 +40,7 @@
             </div>
         </div>
         <div class="btn-group">
-            <button type="submit" class="btn btn-primary" @onclick="Submit">Uložit</button>
+            <button type="submit" class="btn btn-primary">Uložit</button>
             <button type="button" class="btn btn-secondary" @onclick="Cancel">Zrušit</button>
         </div>
     </EditForm>
@@ -42,23 +48,43 @@
 
 }
 @code
-{
-    protected override async Task OnInitializedAsync()
-    {
-        ToDoItem = await ToDoItemsClient.ReadItemByIdAsync(ItemId);
-    }
+{   [Parameter]
+[SupplyParameterFromQuery]
+public bool IsCreateMode { get; set; }
 
     [Parameter]
-    public int ItemId { get; set; }
+    public int? ItemId { get; set; }
 
-    [SupplyParameterFromForm]
-    public ToDoItemView ToDoItem { get; set; }
-    public async Task Submit()
+    private ToDoItemView ToDoItem = new()
     {
-        await ToDoItemsClient.UpdateItemAsync(ToDoItem);
+        Name = string.Empty,
+        Description = string.Empty,
+        IsCompleted = false,
+        Category = null
+    };
+
+    protected override async Task OnInitializedAsync()
+{
+    if (!IsCreateMode && ItemId.HasValue)
+    {
+        ToDoItem = await ToDoItemsClient.ReadItemByIdAsync(ItemId.Value);
+    }
+}
+    private async Task Submit()
+    {
+        if (IsCreateMode)
+        {
+            await ToDoItemsClient.CreateItemAsync(ToDoItem);
+        }
+        else
+        {
+            await ToDoItemsClient.UpdateItemAsync(ToDoItem);
+        }
+
         NavigationManager.NavigateTo("/");
     }
-    public void Cancel()
+
+    private void Cancel()
     {
         NavigationManager.NavigateTo("/");
     }
