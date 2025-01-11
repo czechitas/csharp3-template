@@ -9,10 +9,20 @@
 
 @if (ToDoItem is not null)
 {
-    <EditForm Model="ToDoItem" FormName="EditToDoItem" OnSubmit="Submit">
-        <InputText id="Name" @bind-Value="ToDoItem.Name" />
-        <InputText id="Description" @bind-Value="ToDoItem.Description" />
-        <InputCheckbox id="IsCompleted" @bind-Value="ToDoItem.IsCompleted" />
+    <EditForm Model="ToDoItem" FormName="EditToDoItem" OnValidSubmit="Submit"> @*OnSubmit -> OnValidSubmit*@
+        <DataAnnotationsValidator />
+        <label for="Name" class="form-label">Name:</label>
+        <InputText id="Name" class="form-control" @bind-Value="ToDoItem.Name" />
+        <ValidationMessage For="() => ToDoItem.Name" />
+
+        <label for="Description" class="form-label">Description:</label>
+        <InputText id="Description" class="form-control" @bind-Value="ToDoItem.Description" />
+        <ValidationMessage For="() => ToDoItem.Description" />
+
+        <label for="IsCompleted" class="form-check-label">IsCompleted:</label>
+        <InputCheckbox id="IsCompleted" class="form-check" @bind-Value="ToDoItem.IsCompleted" />
+        <ValidationMessage For="() => ToDoItem.IsCompleted" />
+
         <button type="submit">Submit</button>
     </EditForm>
 }
@@ -32,6 +42,7 @@
 
     public async Task Submit()
     {
+        
         await ToDoItemsClient.UpdateItemAsync(ToDoItem);
         NavigationManager.NavigateTo("/");
     }
