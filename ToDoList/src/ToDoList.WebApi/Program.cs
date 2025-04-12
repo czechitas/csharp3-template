@@ -1,6 +1,7 @@
 using ToDoList.Persistence;
 using ToDoList.Persistence.Repositories;
 using ToDoList.Domain.Models;
+using ToDoList.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -17,6 +18,7 @@ var app = builder.Build();
 {
     //Configure Middleware (HTTP request pipeline)
     app.MapControllers();
+    app.UseMiddleware<TimingMiddleware>();
     app.UseSwagger();
     app.UseSwaggerUI(config => config.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDoList API V1"));
 }
