@@ -1,0 +1,61 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+<PageTitle>Home</PageTitle>
+
+<Dashboard />
+
+@code
+{
+
+
+    int Multiply(int a, int b)
+    {
+        Console.WriteLine("Multiply called.");
+        return a * b;
+    }
+
+    int DivideBy2(int a)
+    {
+        return a / 2;
+    }
+
+    int Divide(int a, int b)
+    {
+        Console.WriteLine("Divide called.");
+        return a / b;
+    }
+
+    public int DelejVypocty(int a, int b, NumberOperationDelegate operation)
+    {
+        return operation(a, b);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        NumberOperationDelegate operationDelegate;
+        operationDelegate = Multiply;
+        operationDelegate += Divide;
+        operationDelegate += Multiply;
+
+        var result = operationDelegate(2, 3);
+        Console.WriteLine(result);
+
+        List<string> strings = ["a", "b", "cdasfojdsaj", "d", "e"];
+        foreach (var s in strings.Where(s => s.Contains('c')))
+        {
+            Console.WriteLine(s);
+        }
+
+        Action<string> actionTakingString = LogToConsole;
+        actionTakingString?.Invoke("Ahoj, posílám zprávu.");
+
+        //Func<int, int, int> numberOperationFunc;
+    }
+    public delegate void StringProcessingDelegate(string message);
+    public delegate int NumberOperationDelegate(int number1, int number2);
+    public void LogToConsole(string msg)
+    {
+        Console.WriteLine(msg);
+    }
+}

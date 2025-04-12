@@ -6,6 +6,7 @@ Vítej, na základě této šablony repozitáře budeš pracovat. Repozitář je
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | **/manuals**             | Obsahuje šikovné manuály a taháky co jsme splašili z minulých kurzů                                                                          |
 | **/ToDoList**            | Hlavní složka tvého repozitáře pro finální projekt, má vlastní [Readme](ToDoList/Readme.md)                                                  |
+| **/ToDoList_Template**   | Finální projekt poskytovaný lektory po lekci                                                                                                 |
 | **/sandbox**             | Dedikované místo pro procvičování, má vlastní [Readme](sandbox/Readme.md)                                                                    |
 | **/prezentace**          | Místo s nahranými prezentacemi                                                                                                               |
 | **/wiki**                | Místo, které jsme připravili jako dedikovanou `Wikipedii` pro tento kurz. Prosím začni tady [StartHere](wiki/00%20StartHere.md)              |
