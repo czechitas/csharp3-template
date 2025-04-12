@@ -17,19 +17,33 @@
     <tbody>
         @if (toDoItems is null)
         {
-            <p>Nacitam...</p>
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         }
 
         @if (toDoItems is not null)
         {
-            @foreach (var toDoItem in toDoItems)
+            @foreach (var toDoItem in toDoItems.Where(CurrentFilter))
             {
-                <tr class="table-success">
+                <tr class=@ConvertItemCompletionToTableRowStyle(toDoItem.IsCompleted)>
                     <td>@toDoItem.ToDoItemId</td>
                     <td>@toDoItem.Name</td>
                     <td>@toDoItem.Description</td>
                     <td>@toDoItem.IsCompleted</td>
-                    <td><button class="btn btn-success" @onclick="() => EditItem(toDoItem)">Edit</button></td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-success" @onclick="() => ToggleItem(toDoItem)">
+                                <i class=@ConvertItemCompletionToToggleIconStyle(toDoItem.IsCompleted)></i>
+                            </button>
+                            <button class="btn btn-info" @onclick="() => EditItem(toDoItem)">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button class="btn btn-danger" @onclick="() => DeleteItem(toDoItem)">
+                                <i class="bi bi-x-square"></i>
+                            </button>
+                        </div>
+                    </td>
                 </tr>
             }
         }
@@ -37,6 +51,9 @@
 </table>
 <button class="btn btn-success" @onclick="OrderById">Seradit Podle Id</button>
 <button class="btn btn-success" @onclick="OrderByName">Seradit Podle Jmena</button>
+<button class="btn btn-success" @onclick="ShowAll">Show All</button>
+<button class="btn btn-success" @onclick="ShowCompleted">Show Completed</button>
+<button class="btn btn-success" @onclick="ShowIncomplete">Show Incomplete</button>
 
 @code
 {
@@ -46,6 +63,7 @@
     }
 
     private List<ToDoItemView>? toDoItems;
+    private Func<ToDoItemView, bool> CurrentFilter = (item) => true;
 
     public void OrderByName()
     {
@@ -60,4 +78,22 @@
     {
         NavigationManager.NavigateTo($"editToDoItem/{toDoItem.ToDoItemId}");
     }
+
+    private async Task ToggleItem(ToDoItemView item)
+    {
+        item.IsCompleted = !item.IsCompleted;
+        await ToDoItemsClient.UpdateItemAsync(item);
+    }
+
+    private async Task DeleteItem(ToDoItemView item)
+    {
+        await ToDoItemsClient.DeleteItemAsync(item);
+    }
+
+    private void ShowAll() => CurrentFilter = item => true;
+    private void ShowCompleted() => CurrentFilter = item => item.IsCompleted;
+    private void ShowIncomplete() => CurrentFilter = item => !item.IsCompleted;
+
+    private string ConvertItemCompletionToTableRowStyle(bool isCompleted) => isCompleted ? "table-success" : "table-secondary";
+    private string ConvertItemCompletionToToggleIconStyle(bool isCompleted) => isCompleted ? "bi bi-check-square-fill" : "bi bi-check-square";
 }

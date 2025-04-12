@@ -1,13 +1,14 @@
 ﻿@page "/editToDoItem/{ItemId:int}"
+@using System.Diagnostics
 @using ToDoList.Frontend.Views
 @using ToDoList.Frontend.Clients
 @inject NavigationManager NavigationManager
 @inject IToDoItemsClient ToDoItemsClient
 @rendermode InteractiveServer
 
-<PageTitle>Edit To Do Item</PageTitle>
-
-@if (ToDoItem is not null)
+<PageTitle>Edit ToDoItem</PageTitle> @*this needs be renamed*@
+<h1>Edit</h1>
+@if (itemView is not null)
 {
     <EditForm Model="ToDoItem" FormName="EditToDoItem" OnValidSubmit="Submit"> @*OnSubmit -> OnValidSubmit*@
         <DataAnnotationsValidator />
@@ -31,18 +32,54 @@
 {
     protected override async Task OnInitializedAsync()
     {
-        ToDoItem = await ToDoItemsClient.ReadItemByIdAsync(ItemId);
+        ToDoItemView? retrievedItem = await ToDoItemsClient.ReadItemByIdAsync(ItemId);
+        if (retrievedItem is not null)
+        {
+            itemView = retrievedItem;
+        }
+
+        @* BasicDelegate += SomeDelegateMethod;
+        BasicDelegate += (itemView) =>
+        {
+            var stackTrace = new StackTrace();
+            var method = stackTrace.GetFrame(0)?.GetMethod();
+            Console.WriteLine($"{method}: Item with id {itemView.ToDoItemId} has been submitted.");
+        }; *@
+
+        ActionDelegate += SomeDelegateMethod;
+        ActionDelegate += (itemView) =>
+        {
+            var stackTrace = new StackTrace();
+            var method = stackTrace.GetFrame(0)?.GetMethod();
+            Console.WriteLine($"{method}: Item with id {itemView.ToDoItemId} has been submitted.");
+        };
     }
 
     [Parameter]
     public int ItemId { get; set; }
 
     [SupplyParameterFromForm]
-    public ToDoItemView ToDoItem { get; set; }
+
+    public ToDoItemView itemView { get; set; } = new ToDoItemView
+        {
+            ToDoItemId = 0,
+            Name = string.Empty,
+            Description = string.Empty,
+            IsCompleted = false
+        };
+
+    private Action<ToDoItemView>? ActionDelegate;
+    private BasicDelegateType BasicDelegate;
+    private delegate void BasicDelegateType(ToDoItemView itemView);
+
+    public void SomeDelegateMethod(ToDoItemView itemView)
+    {
+        Console.WriteLine($"Item with id {itemView.ToDoItemId} has been submitted.");
+    }
 
     public async Task Submit()
     {
-        
+
         await ToDoItemsClient.UpdateItemAsync(ToDoItem);
         NavigationManager.NavigateTo("/");
     }
