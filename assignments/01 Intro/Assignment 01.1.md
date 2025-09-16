@@ -16,15 +16,14 @@ Příprava vývojového prostředí
 Orientace ve vývojovém prostředí
 
 - Otevři si Visual Studio Code a otevři si tvůj repozitář se zklonovanou šablonou
-  - Otevři si soubor Program.cs (v projektu FizzBuzz)
+  - Otevři si soubor Program.cs (v projektu FizzBuzz na cestě sandbox\katas\FizzBuzz.01\FizzBuzz\Program.cs")
   - Kód z první lekce lze přeložit a spustit
     - Otevři si FizzBuzz solution v `Solution Explorer`, klikni pravým na jméno solution, poté klikni na `Build`
   - Otevři si terminál pravým poklikem na jméno projektu `FizzBuzz` -> `Open In Integrated Terminal`
+    - Program jde spustit pomocí příkazu `dotnet run`
   - Kód z první lekce lze debuggovat
     - Do kódu si přidej `Breakpoint` (poklikem vlevo od čísla řádku, objeví se červený puntík), vyzkoušej si kliknout v `Solution Explorer` na projekt pravým tlačítkem, a pak Debug->Start New Instance. Ověř si, že se kód zastaví na tvém breakpointu, zaexperimentuj v posouvání se kódem s běžícím debuggingem.
     - Zkus si pustit debugging pomocí `Run`->`Start Debugging` (vyber projekt FizzBuzz, pokud bude třeba). Můžeš také použít klávesu F5.
-
-
   - Vyzkoušej si, že kód z první lekce lze doručit na GitHub pomocí Visual Studio Code source control.
     - Doruč svůj kód přes `Source Control` -> `stage all changes` -> `commit` -> `push`
 
