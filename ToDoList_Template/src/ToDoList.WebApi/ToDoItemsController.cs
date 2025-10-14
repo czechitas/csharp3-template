@@ -121,4 +121,9 @@ public class ToDoItemsController : ControllerBase
         //respond to client
         return NoContent(); //204
     }
+
+    public void AddItemToStorage(ToDoItem item)
+    {
+        items.Add(item);
+    }
 }
