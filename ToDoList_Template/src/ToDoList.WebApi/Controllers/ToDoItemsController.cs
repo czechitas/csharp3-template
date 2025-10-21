@@ -1,4 +1,4 @@
-namespace ToDoList.WebApi;
+namespace ToDoList.WebApi.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
@@ -8,7 +8,7 @@ using ToDoList.Domain.Models;
 [ApiController]
 public class ToDoItemsController : ControllerBase
 {
-    private static readonly List<ToDoItem> items = [];
+    public readonly List<ToDoItem> items = [];
 
     [HttpPost]
     public ActionResult<ToDoItemGetResponseDto> Create(ToDoItemCreateRequestDto request)

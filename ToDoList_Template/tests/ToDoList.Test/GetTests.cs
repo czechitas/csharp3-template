@@ -1,7 +1,8 @@
 namespace ToDoList.Test;
 
+using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.Models;
-using ToDoList.WebApi;
+using ToDoList.WebApi.Controllers;
 
 public class GetTests
 {
@@ -40,5 +41,4 @@ public class GetTests
         Assert.Equal(todoItem1.Description, firstToDo.Description);
         Assert.Equal(todoItem1.IsCompleted, firstToDo.IsCompleted);
     }
-
 }
