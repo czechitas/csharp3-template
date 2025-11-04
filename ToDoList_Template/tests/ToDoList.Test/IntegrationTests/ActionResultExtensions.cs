@@ -1,4 +1,4 @@
-namespace ToDoList.Test;
+namespace ToDoList.Test.IntegrationTests;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,3 +8,4 @@ public static class ActionResultExtensions
         ? result.Value
         : (T?)(result.Result as ObjectResult)?.Value;
 }
+

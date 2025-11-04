@@ -1,8 +1,9 @@
-namespace ToDoList.Test;
+namespace ToDoList.Test.IntegrationTests;
 
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
+using ToDoList.Persistence;
 using ToDoList.WebApi.Controllers;
 
 public class PutTests
@@ -11,15 +12,18 @@ public class PutTests
     public void Put_ValidId_ReturnsNoContent()
     {
         // Arrange
-        var controller = new ToDoItemsController();
+        var connectionString = "Data Source=../../../IntegrationTests/data/localdb_test.db";
+        using var context = new ToDoItemsContext(connectionString);
+        var controller = new ToDoItemsController(context);
+
         var toDoItem = new ToDoItem
         {
-            ToDoItemId = 1,
             Name = "Jmeno",
             Description = "Popis",
             IsCompleted = false
         };
-        controller.items.Add(toDoItem);
+        context.ToDoItems.Add(toDoItem);
+        context.SaveChanges();
 
         var request = new ToDoItemUpdateRequestDto(
             Name: "Jine jmeno",
@@ -32,21 +36,19 @@ public class PutTests
 
         // Assert
         Assert.IsType<NoContentResult>(result);
+
+        // Cleanup
+        context.ToDoItems.Remove(toDoItem);
+        context.SaveChanges();
     }
 
     [Fact]
     public void Put_InvalidId_ReturnsNotFound()
     {
         // Arrange
-        var controller = new ToDoItemsController();
-        var toDoItem = new ToDoItem
-        {
-            ToDoItemId = 1,
-            Name = "Jmeno",
-            Description = "Popis",
-            IsCompleted = false
-        };
-        controller.items.Add(toDoItem);
+        var connectionString = "Data Source=../../../IntegrationTests/data/localdb_test.db";
+        using var context = new ToDoItemsContext(connectionString);
+        var controller = new ToDoItemsController(context);
 
         var request = new ToDoItemUpdateRequestDto(
             Name: "Jine jmeno",
@@ -62,3 +64,4 @@ public class PutTests
         Assert.IsType<NotFoundResult>(result);
     }
 }
+

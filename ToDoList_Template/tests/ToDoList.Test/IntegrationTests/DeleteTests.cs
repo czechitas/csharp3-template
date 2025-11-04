@@ -1,7 +1,8 @@
-namespace ToDoList.Test;
+namespace ToDoList.Test.IntegrationTests;
 
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.Models;
+using ToDoList.Persistence;
 using ToDoList.WebApi.Controllers;
 
 public class DeleteTests
@@ -10,36 +11,37 @@ public class DeleteTests
     public void Delete_ValidId_ReturnsNoContent()
     {
         // Arrange
-        var controller = new ToDoItemsController();
+        var connectionString = "Data Source=../../../IntegrationTests/data/localdb_test.db";
+        using var context = new ToDoItemsContext(connectionString);
+        var controller = new ToDoItemsController(context);
+
         var toDoItem = new ToDoItem
         {
-            ToDoItemId = 1,
             Name = "Jmeno",
             Description = "Popis",
             IsCompleted = false
         };
-        controller.items.Add(toDoItem);
+        context.ToDoItems.Add(toDoItem);
+        context.SaveChanges();
 
         // Act
         var result = controller.DeleteById(toDoItem.ToDoItemId);
 
         // Assert
         Assert.IsType<NoContentResult>(result);
+
+        // Verify item was deleted
+        var deletedItem = context.ToDoItems.Find(toDoItem.ToDoItemId);
+        Assert.Null(deletedItem);
     }
 
     [Fact]
     public void Delete_InvalidId_ReturnsNotFound()
     {
         // Arrange
-        var controller = new ToDoItemsController();
-        var toDoItem = new ToDoItem
-        {
-            ToDoItemId = 1,
-            Name = "Jmeno",
-            Description = "Popis",
-            IsCompleted = false
-        };
-        controller.items.Add(toDoItem);
+        var connectionString = "Data Source=../../../IntegrationTests/data/localdb_test.db";
+        using var context = new ToDoItemsContext(connectionString);
+        var controller = new ToDoItemsController(context);
 
         // Act
         var invalidId = -1;
@@ -49,3 +51,4 @@ public class DeleteTests
         Assert.IsType<NotFoundResult>(result);
     }
 }
+

@@ -1,7 +1,7 @@
-namespace ToDoList.Test;
+namespace ToDoList.Test.IntegrationTests;
 
-using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.Models;
+using ToDoList.Persistence;
 using ToDoList.WebApi.Controllers;
 
 public class GetTests
@@ -10,23 +10,26 @@ public class GetTests
     public void Get_AllItems_ReturnsAllItems()
     {
         // Arrange
+        var connectionString = "Data Source=../../../IntegrationTests/data/localdb_test.db";
+        using var context = new ToDoItemsContext(connectionString);
+        var controller = new ToDoItemsController(context);
+
         var todoItem1 = new ToDoItem
         {
-            ToDoItemId = 1,
             Name = "Jmeno1",
             Description = "Popis1",
             IsCompleted = false
         };
         var todoItem2 = new ToDoItem
         {
-            ToDoItemId = 2,
             Name = "Jmeno2",
             Description = "Popis2",
             IsCompleted = true
         };
-        var controller = new ToDoItemsController();
-        controller.AddItemToStorage(todoItem1);
-        controller.AddItemToStorage(todoItem2);
+
+        context.ToDoItems.Add(todoItem1);
+        context.ToDoItems.Add(todoItem2);
+        context.SaveChanges();
 
         // Act
         var result = controller.Read();
@@ -40,5 +43,11 @@ public class GetTests
         Assert.Equal(todoItem1.Name, firstToDo.Name);
         Assert.Equal(todoItem1.Description, firstToDo.Description);
         Assert.Equal(todoItem1.IsCompleted, firstToDo.IsCompleted);
+
+        // Cleanup
+        context.ToDoItems.Remove(todoItem1);
+        context.ToDoItems.Remove(todoItem2);
+        context.SaveChanges();
     }
 }
+
