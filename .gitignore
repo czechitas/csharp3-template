@@ -401,3 +401,7 @@ FodyWeavers.xsd
 # Database Cache
 *.db-wal
 *.db-shm
+
+# Local database
+*.db
+
