@@ -1,4 +1,4 @@
-namespace ToDoList.Test.IntegrationTests;
+namespace ToDoList.Test;
 
 using Microsoft.AspNetCore.Mvc;
 
