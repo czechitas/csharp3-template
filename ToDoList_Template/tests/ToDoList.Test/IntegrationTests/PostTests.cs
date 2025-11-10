@@ -3,6 +3,7 @@ namespace ToDoList.Test.IntegrationTests;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Persistence;
+using ToDoList.Persistence.Repositories;
 using ToDoList.WebApi.Controllers;
 
 public class PostTests
@@ -13,7 +14,8 @@ public class PostTests
         // Arrange
         var connectionString = "Data Source=../../../IntegrationTests/data/localdb_test.db";
         using var context = new ToDoItemsContext(connectionString);
-        var controller = new ToDoItemsController(context: context, repository: null);
+        var repository = new ToDoItemsRepository(context);
+        var controller = new ToDoItemsController(repository);
         var request = new ToDoItemCreateRequestDto(
             Name: "Jmeno",
             Description: "Popis",

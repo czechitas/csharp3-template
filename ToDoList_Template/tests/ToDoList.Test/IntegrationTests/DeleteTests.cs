@@ -3,6 +3,7 @@ namespace ToDoList.Test.IntegrationTests;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.Models;
 using ToDoList.Persistence;
+using ToDoList.Persistence.Repositories;
 using ToDoList.WebApi.Controllers;
 
 public class DeleteTests
@@ -13,8 +14,8 @@ public class DeleteTests
         // Arrange
         var connectionString = "Data Source=../../../IntegrationTests/data/localdb_test.db";
         using var context = new ToDoItemsContext(connectionString);
-        var controller = new ToDoItemsController(context: context, repository: null);
-        ;
+        var repository = new ToDoItemsRepository(context);
+        var controller = new ToDoItemsController(repository);
 
         var toDoItem = new ToDoItem
         {
@@ -42,7 +43,8 @@ public class DeleteTests
         // Arrange
         var connectionString = "Data Source=../../../IntegrationTests/data/localdb_test.db";
         using var context = new ToDoItemsContext(connectionString);
-        var controller = new ToDoItemsController(context: context, repository: null);
+        var repository = new ToDoItemsRepository(context);
+        var controller = new ToDoItemsController(repository);
 
         // Act
         var invalidId = -1;
