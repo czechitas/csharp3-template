@@ -1,0 +1,18 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<br />
+
+<b>@GetValue()</b>
+
+@code {
+    private string GetValue()
+    {
+        return Guid.NewGuid().ToString();
+    }
+}
