@@ -1,36 +1,43 @@
 @using ToDoList.Frontend.Models
 <div>
-<h2>ToDo items dashboard</h2>
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Název</th>
-            <th>Popis</th>
-            <th>Dokončeno</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in testData)
-        {
+    <h2>ToDo items dashboard</h2>
+    <table>
+        <thead>
             <tr>
-            <td>@item.Id</td>
-            <td>@item.Name</td>
-            <td>@item.Description</td>
-            <td>@(item.IsCompleted ? "Dokonceny" : "Nedokonceny")</td>
+                <th>ID</th>
+                <th>Název</th>
+                <th>Popis</th>
+                <th>Dokončeno</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in sortedData)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@(item.IsCompleted ? "Dokonceny" : "Nedokonceny")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 
 @code {
     private List<ToDoItemView> testData = new()
+{
+new ToDoItemView(1, "Nakoupit potraviny", "Mléko, chléb, vejce", false),
+new ToDoItemView(2, "Dokončit projekt", "Implementovat všechny funkce", true),
+new ToDoItemView(3, "Zavolat mamince", "Domluvit víkend", false),
+new ToDoItemView(4, "Cvičit", "Běhání v parku", false),
+new ToDoItemView(5, "Přečíst knihu", "Kapitola 5", true)
+};
+
+    private List<ToDoItemView> sortedData = new();
+
+    protected override void OnInitialized()
     {
-        new ToDoItemView(1, "Nakoupit potraviny", "Mléko, chléb, vejce", false),
-        new ToDoItemView(2, "Dokončit projekt", "Implementovat všechny funkce", true),
-        new ToDoItemView(3, "Zavolat mamince", "Domluvit víkend", false),
-        new ToDoItemView(4, "Cvičit", "Běhání v parku", false),
-        new ToDoItemView(5, "Přečíst knihu", "Kapitola 5", true)
-    };
+        sortedData = testData.ToList();
+    }
 }
