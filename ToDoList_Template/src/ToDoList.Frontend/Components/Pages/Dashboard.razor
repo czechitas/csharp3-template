@@ -4,10 +4,10 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Název</th>
-                <th>Popis</th>
-                <th>Dokončeno</th>
+                <th><button @onclick="OrderById">Id</button></th>
+                <th><button @onclick="OrderByName">Name</button></th>
+                <th>Description</th>
+                <th>IsCompleted</th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +35,16 @@ new ToDoItemView(5, "Přečíst knihu", "Kapitola 5", true)
 };
 
     private List<ToDoItemView> sortedData = new();
+
+    public void OrderByName()
+    {
+        sortedData = sortedData.OrderBy(item => item.Name).ToList();
+    }
+
+    public void OrderById()
+    {
+        sortedData = sortedData.OrderBy(item => item.Id).ToList();
+    }
 
     protected override void OnInitialized()
     {
