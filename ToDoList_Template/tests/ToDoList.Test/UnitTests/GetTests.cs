@@ -2,6 +2,7 @@ namespace ToDoList.Test.UnitTests;
 
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
+using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.Persistence.Repositories;
 using ToDoList.WebApi.Controllers;
@@ -9,10 +10,10 @@ using ToDoList.WebApi.Controllers;
 public class GetTests
 {
     [Fact]
-    public void Get_ReadWhenSomeItemAvailable_ReturnsOk()
+    public async Task Get_ReadWhenSomeItemAvailable_ReturnsOk()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
 
         var someItem = new ToDoItem 
@@ -23,52 +24,52 @@ public class GetTests
             IsCompleted = false 
         };
         var someItemList = new List<ToDoItem> { someItem };
-        repositoryMock.ReadAll().Returns(someItemList);
+        repositoryMock.ReadAllAsync().Returns(Task.FromResult<IEnumerable<ToDoItem>>(someItemList));
 
         // Act
-        var result = controller.Read();
+        var result = await controller.Read();
         var resultResult = result.Result;
-        var value = result.GetValue();
 
         // Assert
-        Assert.IsType<OkObjectResult>(resultResult);
+        var okResult = Assert.IsType<OkObjectResult>(resultResult);
+        var value = okResult.Value as IEnumerable<ToDoItemGetResponseDto>;
         Assert.NotNull(value);
         Assert.Single(value);
         Assert.Equal(someItem.ToDoItemId, value.First().Id);
         Assert.Equal(someItem.Name, value.First().Name);
 
-        repositoryMock.Received(1).ReadAll();
+        await repositoryMock.Received(1).ReadAllAsync();
     }
 
     [Fact]
-    public void Get_ReadWhenNoItemAvailable_ReturnsNotFound()
+    public async Task Get_ReadWhenNoItemAvailable_ReturnsNotFound()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
 
-        repositoryMock.ReadAll().Returns((IEnumerable<ToDoItem>?)null);
+        repositoryMock.ReadAllAsync().Returns(Task.FromResult<IEnumerable<ToDoItem>>(null!));
 
         // Act
-        var result = controller.Read();
+        var result = await controller.Read();
         var resultResult = result.Result;
 
         // Assert
         Assert.IsType<NotFoundResult>(resultResult);
 
-        repositoryMock.Received(1).ReadAll();
+        await repositoryMock.Received(1).ReadAllAsync();
     }
 
     [Fact]
-    public void Get_ReadUnhandledException_ReturnsInternalServerError()
+    public async Task Get_ReadUnhandledException_ReturnsInternalServerError()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
-        repositoryMock.ReadAll().Returns(x => throw new Exception("Database error"));
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
+        repositoryMock.ReadAllAsync().Returns(x => Task.FromException<IEnumerable<ToDoItem>>(new Exception("Database error")));
         var controller = new ToDoItemsController(repositoryMock);
 
         // Act
-        var result = controller.Read();
+        var result = await controller.Read();
         var resultResult = result.Result;
 
         // Assert
@@ -76,6 +77,6 @@ public class GetTests
         var objectResult = resultResult as ObjectResult;
         Assert.Equal(500, objectResult?.StatusCode);
 
-        repositoryMock.Received(1).ReadAll();
+        await repositoryMock.Received(1).ReadAllAsync();
     }
 }

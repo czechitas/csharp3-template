@@ -10,10 +10,10 @@ using ToDoList.WebApi.Controllers;
 public class PutTests
 {
     [Fact]
-    public void Put_UpdateByIdWhenItemUpdated_ReturnsNoContent()
+    public async Task Put_UpdateByIdWhenItemUpdated_ReturnsNoContent()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
 
         var existingItem = new ToDoItem
@@ -23,7 +23,7 @@ public class PutTests
             Description = "Popis",
             IsCompleted = false
         };
-        repositoryMock.ReadById(1).Returns(existingItem);
+        repositoryMock.ReadByIdAsync(1).Returns(Task.FromResult<ToDoItem?>(existingItem));
 
         var request = new ToDoItemUpdateRequestDto(
             Name: "Jine jmeno",
@@ -32,13 +32,13 @@ public class PutTests
         );
 
         // Act
-        var result = controller.UpdateById(1, request);
+        var result = await controller.UpdateById(1, request);
 
         // Assert
         Assert.IsType<NoContentResult>(result);
 
-        repositoryMock.Received(1).ReadById(1);
-        repositoryMock.Received(1).Update(Arg.Is<ToDoItem>(x => 
+        await repositoryMock.Received(1).ReadByIdAsync(1);
+        await repositoryMock.Received(1).UpdateAsync(Arg.Is<ToDoItem>(x => 
             x.ToDoItemId == 1 && 
             x.Name == "Jine jmeno" && 
             x.Description == "Jiny popis" && 
@@ -46,13 +46,13 @@ public class PutTests
     }
 
     [Fact]
-    public void Put_UpdateByIdWhenIdNotFound_ReturnsNotFound()
+    public async Task Put_UpdateByIdWhenIdNotFound_ReturnsNotFound()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
 
-        repositoryMock.ReadById(1).Returns((ToDoItem?)null);
+        repositoryMock.ReadByIdAsync(1).Returns(Task.FromResult<ToDoItem?>(null));
 
         var request = new ToDoItemUpdateRequestDto(
             Name: "Jine jmeno",
@@ -61,21 +61,21 @@ public class PutTests
         );
 
         // Act
-        var result = controller.UpdateById(1, request);
+        var result = await controller.UpdateById(1, request);
 
         // Assert
         Assert.IsType<NotFoundResult>(result);
 
-        repositoryMock.Received(1).ReadById(1);
-        repositoryMock.DidNotReceive().Update(Arg.Any<ToDoItem>());
+        await repositoryMock.Received(1).ReadByIdAsync(1);
+        await repositoryMock.DidNotReceive().UpdateAsync(Arg.Any<ToDoItem>());
     }
 
     [Fact]
-    public void Put_UpdateByIdUnhandledException_ReturnsInternalServerError()
+    public async Task Put_UpdateByIdUnhandledException_ReturnsInternalServerError()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
-        repositoryMock.ReadById(Arg.Any<int>()).Returns(x => throw new Exception("Database error"));
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
+        repositoryMock.ReadByIdAsync(Arg.Any<int>()).Returns(x => Task.FromException<ToDoItem?>(new Exception("Database error")));
         var controller = new ToDoItemsController(repositoryMock);
 
         var request = new ToDoItemUpdateRequestDto(
@@ -85,15 +85,15 @@ public class PutTests
         );
 
         // Act
-        var result = controller.UpdateById(1, request);
+        var result = await controller.UpdateById(1, request);
         var resultResult = result as ObjectResult;
 
         // Assert
         Assert.IsType<ObjectResult>(result);
         Assert.Equal(500, resultResult?.StatusCode);
 
-        repositoryMock.Received(1).ReadById(1);
-        repositoryMock.DidNotReceive().Update(Arg.Any<ToDoItem>());
+        await repositoryMock.Received(1).ReadByIdAsync(1);
+        await repositoryMock.DidNotReceive().UpdateAsync(Arg.Any<ToDoItem>());
     }
 }
 

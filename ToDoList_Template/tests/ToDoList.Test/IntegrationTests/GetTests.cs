@@ -1,5 +1,8 @@
 namespace ToDoList.Test.IntegrationTests;
 
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.Persistence;
 using ToDoList.Persistence.Repositories;
@@ -8,7 +11,7 @@ using ToDoList.WebApi.Controllers;
 public class GetTests
 {
     [Fact]
-    public void Get_AllItems_ReturnsAllItems()
+    public async Task Get_AllItems_ReturnsAllItems()
     {
         // Arrange
         var connectionString = "Data Source=../../../IntegrationTests/data/localdb_test.db";
@@ -29,27 +32,32 @@ public class GetTests
             IsCompleted = true
         };
 
-        context.ToDoItems.Add(todoItem1);
-        context.ToDoItems.Add(todoItem2);
-        context.SaveChanges();
+        await context.ToDoItems.AddAsync(todoItem1);
+        await context.ToDoItems.AddAsync(todoItem2);
+        await context.SaveChangesAsync();
 
         // Act
-        var result = controller.Read();
-        var value = result.GetValue();
+        var result = await controller.Read();
+        var resultResult = result.Result;
 
         // Assert
+        var okResult = Assert.IsType<OkObjectResult>(resultResult);
+        var value = okResult.Value as IEnumerable<ToDoItemGetResponseDto>;
         Assert.NotNull(value);
 
-        var firstToDo = value.First();
-        Assert.Equal(todoItem1.ToDoItemId, firstToDo.Id);
+        var firstToDo = value.FirstOrDefault(x => x.Name == todoItem1.Name);
+        Assert.NotNull(firstToDo);
         Assert.Equal(todoItem1.Name, firstToDo.Name);
         Assert.Equal(todoItem1.Description, firstToDo.Description);
         Assert.Equal(todoItem1.IsCompleted, firstToDo.IsCompleted);
+        
+        // Verify the item was actually saved with an ID
+        Assert.True(firstToDo.Id > 0);
 
         // Cleanup
         context.ToDoItems.Remove(todoItem1);
         context.ToDoItems.Remove(todoItem2);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 }
 

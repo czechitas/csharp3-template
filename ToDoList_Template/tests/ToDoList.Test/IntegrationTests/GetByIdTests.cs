@@ -1,6 +1,8 @@
 namespace ToDoList.Test.IntegrationTests;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.Persistence;
 using ToDoList.Persistence.Repositories;
@@ -9,7 +11,7 @@ using ToDoList.WebApi.Controllers;
 public class GetByIdTests
 {
     [Fact]
-    public void GetById_ValidId_ReturnsItem()
+    public async Task GetById_ValidId_ReturnsItem()
     {
         // Arrange
         var connectionString = "Data Source=../../../IntegrationTests/data/localdb_test.db";
@@ -23,16 +25,16 @@ public class GetByIdTests
             Description = "Popis",
             IsCompleted = false
         };
-        context.ToDoItems.Add(toDoItem);
-        context.SaveChanges();
+        await context.ToDoItems.AddAsync(toDoItem);
+        await context.SaveChangesAsync();
 
         // Act
-        var result = controller.ReadById(toDoItem.ToDoItemId);
+        var result = await controller.ReadById(toDoItem.ToDoItemId);
         var resultResult = result.Result;
-        var value = result.GetValue();
 
         // Assert
-        Assert.IsType<OkObjectResult>(resultResult);
+        var okResult = Assert.IsType<OkObjectResult>(resultResult);
+        var value = okResult.Value as ToDoItemGetResponseDto;
         Assert.NotNull(value);
 
         Assert.Equal(toDoItem.ToDoItemId, value.Id);
@@ -42,11 +44,11 @@ public class GetByIdTests
 
         // Cleanup
         context.ToDoItems.Remove(toDoItem);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 
     [Fact]
-    public void GetById_InvalidId_ReturnsNotFound()
+    public async Task GetById_InvalidId_ReturnsNotFound()
     {
         // Arrange
         var connectionString = "Data Source=../../../IntegrationTests/data/localdb_test.db";
@@ -56,7 +58,7 @@ public class GetByIdTests
 
         // Act
         var invalidId = -1;
-        var result = controller.ReadById(invalidId);
+        var result = await controller.ReadById(invalidId);
         var resultResult = result.Result;
 
         // Assert
