@@ -2,6 +2,7 @@
 @using ToDoList.Frontend.Models
 
 @inject IToDoItemsClient toDoItemsClient
+@inject NavigationManager NavigationManager
 
 <div>
     <h2>ToDo items dashboard</h2>
@@ -12,6 +13,7 @@
                 <th><button class="btn btn-primary" @onclick="OrderByName">Sort by Name</button></th>
                 <th>Description</th>
                 <th>IsCompleted</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +24,7 @@
                     <td>@item.Name</td>
                     <td>@item.Description</td>
                     <td>@(item.IsCompleted ? "Dokonceny" : "Nedokonceny")</td>
+                    <td><button class="btn btn-success" @onclick="() => EditItem(item)">Edit</button></td>
                 </tr>
             }
         </tbody>
@@ -29,15 +32,6 @@
 </div>
 
 @code {
-    private List<ToDoItemView> testData = new()
-{
-new ToDoItemView(1, "Nakoupit potraviny", "Mléko, chléb, vejce", false),
-new ToDoItemView(2, "Dokončit projekt", "Implementovat všechny funkce", true),
-new ToDoItemView(3, "Zavolat mamince", "Domluvit víkend", false),
-new ToDoItemView(4, "Cvičit", "Běhání v parku", false),
-new ToDoItemView(5, "Přečíst knihu", "Kapitola 5", true)
-};
-
     private List<ToDoItemView> sortedData = new();
 
     public void OrderByName()
@@ -48,6 +42,11 @@ new ToDoItemView(5, "Přečíst knihu", "Kapitola 5", true)
     public void OrderById()
     {
         sortedData = sortedData.OrderBy(item => item.Id).ToList();
+    }
+
+    public void EditItem(ToDoItemView toDoItem)
+    {
+        NavigationManager.NavigateTo($"editToDoItem/{toDoItem.Id}");
     }
 
     protected override async Task OnInitializedAsync()
