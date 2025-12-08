@@ -9,14 +9,24 @@
 
 @if (ToDoItemModel is not null)
 {
-    <EditForm Model="ToDoItemModel" FormName="EditToDoItem" OnSubmit="Submit">
+    <EditForm Model="ToDoItemModel" FormName="EditToDoItem" OnSubmit="Submit"> @*OnValidSubmit*@
         <div class="mb-3">
-            <label for="Name" class="form-label">Name</label>
-            <InputText id="Name" @bind-Value="ToDoItemModel.Name" class="form-control" />
+            <label for="Name" class="form-label">Name:</label>
+            <InputText id="Name" class="form-control" @bind-Value="ToDoItemModel.Name" />
         </div>
-        <InputText id="Description" @bind-Value="ToDoItemModel.Description" />
-        <InputCheckbox id="IsCompleted" @bind-Value="ToDoItemModel.IsCompleted" />
-        <button type="submit">Odeslat</button>
+        <div class="mb-3">
+            <label for="Description" class="form-label">Description:</label>
+            <InputText id="Description" class="form-control" @bind-Value="ToDoItemModel.Description" />
+        </div>
+        <div class="mb-3">
+            <label for="IsCompleted" class="form-check-label">IsCompleted:</label>
+        </div>
+        <div class="mb-3">
+            <InputCheckbox id="IsCompleted" class="form-check" @bind-Value="ToDoItemModel.IsCompleted" />
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
     </EditForm>
 }
 
