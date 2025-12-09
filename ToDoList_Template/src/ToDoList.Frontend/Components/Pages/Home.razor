@@ -32,4 +32,63 @@ Welcome to your new app.
     {
         return Guid.NewGuid().ToString();
     }
+
+
+    public delegate int NumberOperationDelegate(int number1, int number2); //definice delegátu
+    public delegate void StringTakingDelegate(string message);
+
+    public int Multiply(int a, int b)
+    {
+        Console.WriteLine("Multiply called.");
+        return a * b;
+    }
+
+    public int Divide(int a, int b)
+    {
+        Console.WriteLine("Divide called.");
+        return a / b;
+    }
+
+    public void LogToConsole(string msg)
+    {
+        Console.WriteLine(msg);
+    }
+    public bool DoesContainCharC(string retezec)
+    {
+        return retezec.Contains('c');
+    }
+
+    protected override void OnInitialized()
+    {
+        NumberOperationDelegate mujDelegat; // deklarace
+        mujDelegat = Multiply;
+        mujDelegat += Multiply;
+        mujDelegat += Divide;
+
+        var result = mujDelegat(2, 3);
+        Console.WriteLine(result);
+
+        StringTakingDelegate mujDelegatNaStringy; //deklarace
+        mujDelegatNaStringy = LogToConsole;
+        mujDelegatNaStringy += LogToConsole;
+        mujDelegatNaStringy += LogToConsole;
+
+        mujDelegatNaStringy?.Invoke("LogujuDoKonzole");
+
+        List<string> strings = ["a", "b", "csafoskjfapjd", "d", "e"];
+        //strings.Find
+        strings.Where(s => s.Contains('c'));
+        strings.Where(DoesContainCharC);
+
+        Action functionReturningVoid;
+        Action<string> functionTakingStringAndReturningVoid;
+        functionTakingStringAndReturningVoid = LogToConsole;
+
+        functionTakingStringAndReturningVoid?.Invoke("Zprava z Action!");
+
+        Func<bool> functionReturningBool;
+        Func<int, int, int> functionReturningIntAndTakingTwoInts;
+
+        functionReturningIntAndTakingTwoInts = Multiply;
+    }
 }
