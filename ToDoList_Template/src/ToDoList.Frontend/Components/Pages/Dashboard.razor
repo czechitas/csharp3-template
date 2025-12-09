@@ -70,6 +70,8 @@
     private async Task DeleteItem(ToDoItemView item)
     {
         await toDoItemsClient.DeleteItemAsync(item);
+        sortedData = await toDoItemsClient.ReadItemsAsync();
+        //StateHasChanged();
     }
 
     protected override async Task OnInitializedAsync()
