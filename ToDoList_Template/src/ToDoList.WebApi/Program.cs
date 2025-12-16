@@ -1,5 +1,6 @@
 using ToDoList.Domain.Models;
 using ToDoList.Persistence;
+using ToDoList.Persistence.Audit;
 using ToDoList.Persistence.Repositories;
 using ToDoList.WebApi.Services;
 
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddSwaggerGen();
     builder.Services.AddDbContext<ToDoItemsContext>();
     builder.Services.AddScoped<IRepositoryAsync<ToDoItem>, ToDoItemsRepository>();
+    builder.Services.AddScoped<IAudit, Audit>();
 
     // Lifecycle demo
     builder.Services.AddTransient<IRandomValueServiceTransient, RandomValueServiceTransient>();
